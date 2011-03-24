@@ -10,7 +10,7 @@ import com.judoguys.bukkit.gps.configuration.GPSConfigurationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class GPSPlayerListener extends PlayerListener
@@ -31,7 +31,7 @@ public class GPSPlayerListener extends PlayerListener
 	}
 	
 	@Override
-	public void onPlayerLogin (PlayerLoginEvent event)
+	public void onPlayerJoin (PlayerEvent event)
 	{
 		Player player = event.getPlayer();
 		String name = player.getName();

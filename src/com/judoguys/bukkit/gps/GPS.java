@@ -70,7 +70,7 @@ public class GPS extends JavaPlugin
 		
 		pm = getServer().getPluginManager();
 		playerListener = new GPSPlayerListener(this);
-		pm.registerEvent(Event.Type.PLAYER_LOGIN, playerListener, Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
 		
