@@ -1,0 +1,3 @@
+player: player1
+type: FOLLOWING_PLAYER
+followedPlayer: player2

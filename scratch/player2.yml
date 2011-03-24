@@ -1,0 +1,6 @@
+player: player2
+type: EXACT_LOCATION
+location:
+  x: 1.23
+  y: 2.34
+  z: -3.45

@@ -1,0 +1,34 @@
+name: GPS
+description: Use your compass to follow players and point to any location in your world
+version: 0.0.1
+author: willurd
+main: com.judoguys.bukkit.gps.GPS
+commands:
+  gps:
+    description: Changes where your compass points
+    usage: |
+           Usage of /<command>:
+           /<command> find <player-name> - Points to the given players location when used
+           /<command> follow <player-name> - Follows a given player as they move
+           /<command> pointto x y z [<name>] - Points to a specific set of coordinates
+           /<command> reset - Points to spawn
+
+# /<command> pointto <name> - Points to the name of a set of named coordinates
+# /<command> name x y z <name> - Names a set of corrdinates without pointing to them
+# /<command> remove <name> - Removes a set of named coordinates
+# /<command> list - Lists all named coordinates
+
+# /<command> hide - Hide yourself so others can't point their compasses to you (except admins)
+# /<command> unhide - Allow others to point their compasses to you
+# /<command> where - Tells you where your compass is currently pointed
+# /<command> where <name> - Tells you the coordinates pointed to by <name>
+# /<command> whereami - Tells you the coordinates where you are now
+
+# /gps distance x y z - Tells you how far you are away from the given coordinates
+# /gps distance <name> - Tells you how far you are away from the given named coordinates
+# /gps distance (how to differentiate for player?) - Tells you how far you are away from the given player
+
+# /gps sealevel - Tells you where sea level is, relative to your current position
+#                   - "You are at sea level"
+#                   - "Sea level is 12 blocks above you"
+#                   - "Sea level is 36 blocks below you"
