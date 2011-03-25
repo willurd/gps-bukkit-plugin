@@ -43,8 +43,28 @@ import com.judoguys.bukkit.gps.actions.ResetAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 
 /**
- * Please excuse my Java. I haven't touched the language in
- * quite some time.
+ * GPS - A plugin that provides location-based information and compass
+ * reorienting.
+ * 
+ * Allows players to:
+ *   - Point their compass to another player's current location.
+ *   - Make their compass follow another player around, and update as
+ *     they move.
+ *   - Point their compass to spawn.
+ *   - Point their compass at a specific set of coordinates.
+ * 
+ * In the future, will allow players to:
+ *   - Save all of their settings so they persist across server runs. ^_^
+ *   - Name coordinates and point to them by their names.
+ *   - List all of their named coordinates.
+ *   - Find out how far (in blocks) they are away from a location
+ *     or player.
+ *   - Disallow others from locating them using GPS (and reallow).
+ *   - See where their compass is currently pointing.
+ *   - See the coordinates of a named location or player.
+ *   - See the coordinates of where they are currently standing.
+ * 
+ * See the TODO file for more information on what's planned for GPS.
  */
 public class GPS extends JavaPlugin
 {
@@ -57,6 +77,7 @@ public class GPS extends JavaPlugin
 	private GPSPlayerListener playerListener;
 	private CommandHandler commandHandler;
 	private PluginDescriptionFile desc;
+	private File playersFolder;
 	private String version;
 	private String label;
 	
@@ -65,13 +86,26 @@ public class GPS extends JavaPlugin
 		// Does nothing.
 	}
 	
+	/**
+	 * Returns a string that identifies this plugin, mostly used
+	 * for logging.
+	 */
 	public String getLabel ()
 	{
 		return label;
 	}
 	
 	/**
-	 * Register for events, setup logging, etc.
+	 * Returns the players folder, where all of the player-specific
+	 * GPS information is stored.
+	 */
+	public File getPlayersFolder ()
+	{
+		return playersFolder;
+	}
+	
+	/**
+	 * Called when the plugin is enabled.
 	 */
 	public void onEnable ()
 	{
@@ -88,6 +122,9 @@ public class GPS extends JavaPlugin
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
 		
+		File dataFolder = getDataFolder();
+		playersFolder = new File(dataFolder.getAbsolutePath() + "/players/");
+		
 		loadSettings();
 		setupPermissions();
 		setupCommands();
@@ -96,7 +133,8 @@ public class GPS extends JavaPlugin
 	}
 	
 	/**
-	 * Remove listeners?, save?, etc?
+	 * Called when the plugin is disabled (either disabled explicitely,
+	 * or when the server is gracefully shutdown).
 	 */
 	@Override
 	public void onDisable ()
@@ -106,6 +144,9 @@ public class GPS extends JavaPlugin
 		log.info(getLabel() + " disabled");
 	}
 	
+	/**
+	 * Handles commands from a client (any sentance that starts with "/sometext").
+	 */
 	@Override
 	public boolean onCommand (CommandSender sender, Command cmd,
 		String label, String[] args)
@@ -137,7 +178,7 @@ public class GPS extends JavaPlugin
 	}
 	
 	/**
-	 * Load the settings file(s), which make gps settings persistent
+	 * Load in the settings files, which make gps settings persistent
 	 * across server runs.
 	 */
 	private void loadSettings ()
@@ -145,49 +186,73 @@ public class GPS extends JavaPlugin
 		// Make sure we have all the folders we need for this to work.
 		ensureDataDirectoriesExist();
 		
-		// TODO: Load plugin-wide settings here.
-		
-		loadPlayerConfigurations();
+		// Load the settings.
+		loadPluginSettings();
+		loadGPSConfigurations();
 	}
 	
-	private void loadPlayerConfigurations ()
+	/**
+	 * Loads in the general plugin settings.
+	 */
+	private void loadPluginSettings ()
+	{
+		// TODO: Load plugin-wide settings, like the command for example.
+	}
+	
+	/**
+	 * Loads in all of the player configuration files.
+	 */
+	private void loadGPSConfigurations ()
 	{
 		configurations = new HashMap<String, GPSConfiguration>();
 		
-		String dataPath = getDataFolder().getAbsolutePath();
+		File playersFolder = getPlayersFolder();
 		
 		// TODO: Iterate through the player files and load the settings.
 	}
 	
+	/**
+	 * Creates the directories this plugin uses to store its data.
+	 */
 	private void ensureDataDirectoriesExist ()
 	{
+		// Make sure the data folder exists.
 		File dataFolder = getDataFolder();
 		
 		if (!dataFolder.exists()) {
-			log.info(getLabel() + " GPS data folder does not exist. Creating it now.");
+			log.info(getLabel() + " Data folder does not exist. Creating it now.");
 			dataFolder.mkdir();
 		}
 		
+		// Make sure the players folder exists.
 		File playersFolder = getPlayersFolder();
 		
 		if (!playersFolder.exists()) {
-			log.info(getLabel() + " GPS players folder does not exist. Creating it now.");
+			log.info(getLabel() + " Players folder does not exist. Creating it now.");
 			playersFolder.mkdir();
 		}
 	}
 	
-	private File getPlayersFolder ()
-	{
-		File dataFolder = getDataFolder();
-//		return new File(dataFolder, "players");
-		return new File(dataFolder.getAbsolutePath() + "/players/");
-	}
-	
+	/**
+	 * NOTE: Permissions is not supported...yet.
+	 * 
+	 * Thought this does nothing now, once permissions is supported
+	 * it will load the permissions information and do the requisite
+	 * setup.
+	 */
 	private void setupPermissions ()
 	{
-		// NOTE: Permissions is not supported...yet.
+		
 	}
 	
+	/**
+	 * This is where Actions are registered with the command handler.
+	 * If an action is not registered here, it won't get handled.
+	 * 
+	 * If you want to add a new sub command to /gps, like '/gps orbit',
+	 * create a new Action class, OribitAction, and register an instance
+	 * of it here.
+	 */
 	private void setupCommands ()
 	{
 		commandHandler = new CommandHandler(this);
