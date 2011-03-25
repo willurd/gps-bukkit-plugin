@@ -93,12 +93,7 @@ public class GPSPlayerListener extends PlayerListener
 				// owns this configuration object; set the owner's compass target
 				// to be the new location.
 				Player player = config.getPlayer();
-				try {
-					player.setCompassTarget(location);
-				} catch (Exception ex) {
-					// FIXME: This is going to spam the logs. Figure out why this is breaking.
-					log.info(getPlugin().getLabel() + " Error setting " + player.getName() + "'s compass target to " + player.getName() + "'s location");
-				}
+				player.setCompassTarget(location);
 			}
 		}
 	}

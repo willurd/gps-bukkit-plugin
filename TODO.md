@@ -40,4 +40,6 @@
 
 ## Far Off Plans
 
-* If Bukkit ever gets a graphics api it would be awesome to have a command like /gps route <location> which would light up the blocks along the most efficient route from you to the location you specify
+* If Bukkit ever gets a graphics api:
+  * Have a command like /gps route <location> which would light up the blocks along the most efficient route from you to the location you specify
+  * Highlight the blocks at your waypoints (named locations) with a certain color, and highlight the block that you're currently pointed to with another color

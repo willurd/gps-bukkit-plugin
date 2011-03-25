@@ -193,17 +193,11 @@ public class GPSConfiguration
 	}
 	
 	public void follow (Player playerToFollow)
-	{
+	{	
 		setType(GPSConfigurationType.FOLLOWING_PLAYER);
 		followedPlayer = playerToFollow;
 		
-		try {
-			player.setCompassTarget(followedPlayer.getLocation());
-		} catch (Exception ex) {
-			log.info(getPlugin().getLabel() + " Error setting " + player.getName() + "'s compass target to PLAYER: " + followedPlayer.getName());
-			return;
-		}
-		
+		player.setCompassTarget(followedPlayer.getLocation());
 		player.sendMessage("Your GPS is now following player '" + followedPlayer.getDisplayName() + "'");
 	}
 	
@@ -212,37 +206,20 @@ public class GPSConfiguration
 		setType(GPSConfigurationType.EXACT_LOCATION);
 		exactLocation = new Location(player.getWorld(), x, y, z);
 		
-		try {
-			player.setCompassTarget(exactLocation);
-		} catch (Exception ex) {
-			log.info(getPlugin().getLabel() + " Error setting " + player.getName() + "'s compass target to LOCATION: " + exactLocation.toString());
-			return;
-		}
-		
+		player.setCompassTarget(exactLocation);
 		player.sendMessage("Your GPS is now pointing at (x=" + x + ", y=" + y + ", z=" + z + ")");
 	}
 	
 	public void setLocation (Location location)
 	{
-		setLocation(location.getX(), location.getY(), location.getZ());
+		setLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 	
 	public void reset ()
 	{
 		setType(GPSConfigurationType.SPAWN);
 		
-		try {
-			log.info(getPlugin().getLabel() + " reset(): Player: " + player.toString());
-			log.info(getPlugin().getLabel() + " reset(): World: " + player.getWorld().toString());
-			log.info(getPlugin().getLabel() + " reset(): Spawn: " + player.getWorld().getSpawnLocation().toString());
-			player.setCompassTarget(player.getWorld().getSpawnLocation());
-		} catch (Exception ex) {
-			log.info(getPlugin().getLabel() + " Error setting " + player.getName() + "'s compass target to SPAWN");
-			log.info(getPlugin().getLabel() + " " + ex.toString());
-			ex.printStackTrace();
-			return;
-		}
-		
+		player.setCompassTarget(player.getWorld().getSpawnLocation());
 		player.sendMessage("Your GPS is now pointed at Spawn");
 	}
 }
