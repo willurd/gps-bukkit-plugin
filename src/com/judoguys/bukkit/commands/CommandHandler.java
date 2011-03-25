@@ -25,6 +25,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Manages a group of actions that can handle Bukkit commands. Given
+ * a CommandSender, Command, and arguments, it will find the appropriate
+ * handler (Action) for that command.
+ * 
+ * @example Basic Usage
+ *     CommandHandler timeHandler = new CommandHandler();
+ *     timeHandler.addAction(new NowAction()); // will handle /time now
+ *     timeHandler.addAction(new DayNightAction()); // will handle /time daynight
+ *     
+ *     public class Plugin extends JavaPlugin {
+ *         @Override
+ *         public boolean onCommand(CommandSender sender, Command cmd,
+ *             String label, String[] args) {
+ *             // Make sure the command is a /time command HERE.
+ *             // Then pass off the command to timeHandler which will execute
+ *             // the appropriate action, depending on the supplied arguments.
+ *             timeHandler.handleCommand(sender, command, label, args);
+ *         }
+ *     }
+ */
 public class CommandHandler
 {
 	private JavaPlugin plugin;
@@ -88,5 +109,26 @@ public class CommandHandler
 	public Collection<Action> getActions ()
 	{
 		return actions.values();
+	}
+	
+	public String getUsage (CommandSender sender)
+	{
+		Collection<Action> actions = getActions();
+		Iterator<Action> it = actions.iterator();
+		
+		StringBuilder builder = new StringBuilder();
+		
+		while (it.hasNext()) {
+			Action action = it.next();
+			String usage = action.getUsage();
+			if (usage != null) {
+				builder.append(usage);
+				if (it.hasNext()) {
+					builder.append('\n');
+				}
+			}
+		}
+		
+		return builder.toString();
 	}
 }

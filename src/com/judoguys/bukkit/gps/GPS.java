@@ -52,20 +52,17 @@ public class GPS extends JavaPlugin
 	
 	public Logger log;
 	public PluginManager pm;
-	
 	public HashMap<String, GPSConfiguration> configurations;
 	
 	private GPSPlayerListener playerListener;
 	private CommandHandler commandHandler;
-	
 	private PluginDescriptionFile desc;
 	private String version;
-	
 	private String label;
 	
 	public GPS ()
 	{
-		// TODO: Do plugin initialization stuff.
+		// Does nothing.
 	}
 	
 	public String getLabel ()
@@ -104,14 +101,14 @@ public class GPS extends JavaPlugin
 	@Override
 	public void onDisable ()
 	{
-		// TODO: Do stuff.
+		// TODO: What should be done here?.
 		
 		log.info(getLabel() + " disabled");
 	}
 	
 	@Override
 	public boolean onCommand (CommandSender sender, Command cmd,
-			String label, String[] args)
+		String label, String[] args)
 	{
 		String name = cmd.getName();
 		
@@ -138,20 +135,6 @@ public class GPS extends JavaPlugin
 		
 		return true;
 	}
-	
-	// public void printUsage (CommandSender sender)
-	// {
-	// 	sender.sendMessage("Usage of /<command>:");
-	// 	
-	// 	Collection<Action> actions = commandHandler.getActions();
-	// 	Iterator<Action> it = actions.iterator();
-	// 	
-	// 	while (it.hasNext()) {
-	// 		Action action = it.next();
-	// 		// FIXME: Should this do something special for multi-line usage strings?
-	// 		sender.sendMessage(" - " + action.getUsage());
-	// 	}
-	// }
 	
 	/**
 	 * Load the settings file(s), which make gps settings persistent
