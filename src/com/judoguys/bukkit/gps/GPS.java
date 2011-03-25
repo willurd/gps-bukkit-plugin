@@ -111,6 +111,8 @@ public class GPS extends JavaPlugin
 	{
 		log = getServer().getLogger();
 		
+		configurations = new HashMap<String, GPSConfiguration>();
+		
 		desc = getDescription();
 		version = desc.getVersion();
 		label = "[" + desc.getName() + "]";
@@ -186,29 +188,7 @@ public class GPS extends JavaPlugin
 		// Make sure we have all the folders we need for this to work.
 		ensureDataDirectoriesExist();
 		
-		// Load the settings.
-		loadPluginSettings();
-		loadGPSConfigurations();
-	}
-	
-	/**
-	 * Loads in the general plugin settings.
-	 */
-	private void loadPluginSettings ()
-	{
 		// TODO: Load plugin-wide settings, like the command for example.
-	}
-	
-	/**
-	 * Loads in all of the player configuration files.
-	 */
-	private void loadGPSConfigurations ()
-	{
-		configurations = new HashMap<String, GPSConfiguration>();
-		
-		File playersFolder = getPlayersFolder();
-		
-		// TODO: Iterate through the player files and load the settings.
 	}
 	
 	/**

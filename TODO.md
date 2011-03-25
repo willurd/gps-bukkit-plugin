@@ -1,5 +1,6 @@
 # TODO
 
+* Get some color into the messages being sent to players
 * Hook into the player leave/disconnect event (whatever it's called) to notify following players that that player is no longer online
 * The player listener on-move event handler might need some performance improvements
   * For example: having a HashMap from player to GPSConfiguration objects that are following them, instead of iterating over all configurations
