@@ -65,7 +65,7 @@ public class FindAction extends GPSAction
 		
 		// Grab this player's GPS configuration object and update it.
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
-		config.setLocation(playerToFind.getLocation());
+		config.setExactLocation(playerToFind.getLocation());
 		
 		return true;
 	}

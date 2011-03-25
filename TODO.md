@@ -1,7 +1,8 @@
 # TODO
 
-* Make the action success messages actually get sent to the user
+* Hook into the player leave/disconnect event (whatever it's called) to notify following players that that player is no longer online
 * The player listener on-move event handler might need some performance improvements
+  * For example: having a HashMap from player to GPSConfiguration objects that are following them, instead of iterating over all configurations
 * Deal with followed players that are offline or in a different world:
   * Probably just display a warning/info message telling the user
   * If the player comes back online or into the world let the user know and do business as usual:
@@ -12,14 +13,14 @@
 
 ## Commands
 
-### Initial Commands
+### Finished
 
 * find <player-name>
 * follow <player-name>
 * pointto x y z
 * reset - Points to spawn
 
-### Future Commands
+### To do
 
 * pointto x y z [<name>]
 * pointto <name>

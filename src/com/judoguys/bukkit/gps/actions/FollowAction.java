@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.bukkit.gps.configuration.GPSConfigurationType;
 
 /**
  * /<command> follow <player-name>
@@ -47,13 +48,22 @@ public class FollowAction extends GPSAction
 		
 		// Get the player that executed this command.
 		Player player = (Player)sender;
+		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		
 		// Get the player we'd like to follow.
 		String playerName = args[1];
 		Player playerToFollow = getPlugin().getServer().getPlayer(playerName);
 		
+		// Notify the player if they are already following this player.
+		if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
+			config.getFollowedPlayerName().equalsIgnoreCase(playerName)) {
+				player.sendMessage("You are already following " + playerName);
+			return true;
+		}
+		
+		// Check to make sure their logged in.
 		if (playerToFollow == null) {
-			player.sendMessage("Player '" + playerName + "' is not logged in");
+			player.sendMessage("Player " + playerName + " is not logged in");
 			return true;
 		}
 		
@@ -65,12 +75,11 @@ public class FollowAction extends GPSAction
 		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFollow.getWorld()) {
-			player.sendMessage("Player '" + playerName + "' is not in this world");
+			player.sendMessage("Player " + playerName + " is not in this world");
 			return true;
 		}
 		
-		// Grab this player's GPS configuration object and update it.
-		GPSConfiguration config = getPlugin().configurations.get(player.getName());
+		// Update this player's GPS configuration object.
 		config.follow(playerToFollow);
 		
 		return true;

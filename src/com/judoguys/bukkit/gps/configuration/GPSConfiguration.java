@@ -17,6 +17,9 @@ package com.judoguys.bukkit.gps.configuration;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.gps.GPS;
+import com.judoguys.bukkit.gps.utils.LocationUtils;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -27,35 +30,40 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
 
-import com.judoguys.bukkit.gps.GPS;
-
 public class GPSConfiguration
 {
-	private Logger log;
+	public static String CONFIG_FILE_EXTENSION = "yml";
 	
+	private Logger log;
 	private GPS plugin;
+	private String playerName;
 	private Player player;
 	private GPSConfigurationType type;
-	private HashMap<String, Location> savedLocations;
+	private HashMap<String, Location> namedLocations;
+	
+	private String followedPlayerName;
 	
 	/**
 	 * Only used when type == GPSConfigurationType.FOLLOWING_PLAYER.
 	 */
 	private Player followedPlayer;
-
-	/**
-	 * Only used when type == GPSConfigurationType.EXACT_LOCATION.
-	 */
-	private Location exactLocation;
+	
+	private Location location;
 	
 	public GPSConfiguration (GPS plugin)
 	{
 		this.plugin = plugin;
 		log = plugin.log;
 		
-		savedLocations = new HashMap<String, Location>();
+		namedLocations = new HashMap<String, Location>();
 	}
-
+	
+	public static File configFileFor (String playerName, GPS plugin)
+	{
+		File playersFolder = plugin.getPlayersFolder();
+		return new File(playersFolder, playerName + "." + CONFIG_FILE_EXTENSION);
+	}
+	
 	/**
 	 * FIXME: This function is large and gross; clean it up.
 	 * 
@@ -71,52 +79,56 @@ public class GPSConfiguration
 		}
 		
 		Server server = plugin.getServer();
-		GPSConfiguration inst = new GPSConfiguration(plugin);
+		GPSConfiguration config = new GPSConfiguration(plugin);
 		
-		Configuration config = new Configuration(file);
-		config.load();
+		Configuration configFile = new Configuration(file);
+		configFile.load();
 		
-		String playerName = config.getString("player");
+		String playerName = configFile.getString("player");
 		Player player = server.getPlayer(playerName);
 		
 		if (player == null) {
-			plugin.log.info(plugin.getLabel() + " Tried to load config for player that doesn't exist: " + playerName);
+			plugin.log.info(plugin.getLabel() + " Tried to load configuration for player that isn't logged in: " + playerName);
 			return null;
 		}
 		
-		inst.setPlayer(player);
+		config.setPlayerName(playerName);
+		config.setPlayer(player);
 		
-		String typeString = config.getString("type");
-		inst.setType(GPSConfigurationType.valueOf(typeString));
+		String typeString = configFile.getString("type");
+		config.setType(GPSConfigurationType.valueOf(typeString));
 		
-		switch (inst.getType())
+		switch (config.getType())
 		{
 		case FOLLOWING_PLAYER:
-			String followedPlayerName = config.getString("followedPlayer");
+			String followedPlayerName = configFile.getString("followedPlayer");
 			Player followedPlayer = server.getPlayer(followedPlayerName);
 			
-			if (followedPlayer == null) {
-				// FIXME: Depending on how server.getPlayer() works this might
-				//        be totally wrong. If it returns null if the player is
-				//        off-line then we'd want to keep the FOLLOWING_PLAYER
-				//        type and update the property when that player logs in.
-				inst.reset();
+			if (followedPlayer != null) {
+				config.follow(followedPlayer);
 			} else {
-				inst.follow(followedPlayer);
+				config.setFollowedPlayerName(followedPlayerName);
+				double x = configFile.getDouble("location.x", 0);
+				double y = configFile.getDouble("location.y", 0);
+				double z = configFile.getDouble("location.z", 0);
+				config.setLocation(x, y, z);
 			}
+			
 			break;
+		
 		case EXACT_LOCATION:
-			double x = config.getDouble("location.x", 0);
-			double y = config.getDouble("location.y", 0);
-			double z = config.getDouble("location.z", 0);
-			inst.setLocation(x, y, z);
+			double x = configFile.getDouble("location.x", 0);
+			double y = configFile.getDouble("location.y", 0);
+			double z = configFile.getDouble("location.z", 0);
+			config.setExactLocation(x, y, z);
 			break;
+		
 		case SPAWN:
-			inst.reset();
+			config.reset();
 			break;
 		}
 		
-		return null;
+		return config;
 	}
 	
 	public void save ()
@@ -127,6 +139,16 @@ public class GPSConfiguration
 	public GPS getPlugin ()
 	{
 		return plugin;
+	}
+	
+	public String getPlayerName ()
+	{
+		return playerName;
+	}
+
+	public void setPlayerName (String value)
+	{
+		playerName = value;
 	}
 	
 	public Player getPlayer ()
@@ -148,78 +170,126 @@ public class GPSConfiguration
 	{
 		type = value;
 		
-		if (type != GPSConfigurationType.EXACT_LOCATION) {
-			exactLocation = null;
-		}
-		
 		if (type != GPSConfigurationType.FOLLOWING_PLAYER) {
 			followedPlayer = null;
 		}
 	}
 	
-	public HashMap<String, Location> getLocations ()
+	public HashMap<String, Location> getNamedLocations ()
 	{
-		return savedLocations;
+		return namedLocations;
 	}
 	
-	public void saveLocation (String name, Location location)
+	public void saveNamedLocation (String name, Location location)
 	{
-		savedLocations.put(name, location);
+		namedLocations.put(name, location);
 	}
 	
-	public void removeLocation (String name)
+	public void removeNamedLocation (String name)
 	{
-		savedLocations.remove(name);
+		namedLocations.remove(name);
 	}
 	
-	public boolean hasLocation (String name)
+	public boolean hasNamedLocation (String name)
 	{
-		return savedLocations.containsKey(name);
+		return namedLocations.containsKey(name);
 	}
 	
-	public Location getLocation (String name)
+	public Location getNamedLocation (String name)
 	{
-		return savedLocations.get(name);
+		return namedLocations.get(name);
 	}
-
+	
+	public Location getLocation ()
+	{
+		return location;
+	}
+	
+	public void setLocation (double x, double y, double z)
+	{
+		setLocation(new Location(player.getWorld(), x, y, z));
+	}
+	
+	public void setLocation (Location location)
+	{
+		this.location = location;
+		refreshLocation();
+	}
+	
+	public String getFollowedPlayerName ()
+	{
+		return followedPlayerName;
+	}
+	
+	public void setFollowedPlayerName (String value)
+	{
+		followedPlayerName = value;
+	}
+	
 	public Player getFollowedPlayer ()
 	{
 		return followedPlayer;
 	}
 	
-	public Location getExactLocation ()
+	public void refreshLocation ()
 	{
-		return exactLocation;
+		applyLocation();
+		notifyLocation();
+	}
+	
+	public void applyLocation ()
+	{
+		player.setCompassTarget(location);
+	}
+	
+	public void notifyLocation ()
+	{
+		switch (getType())
+		{
+		case FOLLOWING_PLAYER:
+			if (getFollowedPlayer() != null) {
+				player.sendMessage("GPS is now following " + getFollowedPlayer().getDisplayName());
+			} else {
+				player.sendMessage(getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
+			}
+			break;
+		
+		case EXACT_LOCATION:
+			player.sendMessage("GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
+			break;
+		
+		case SPAWN:
+			player.sendMessage("GPS is now pointed at Spawn");
+			break;
+		}
 	}
 	
 	public void follow (Player playerToFollow)
-	{	
+	{
 		setType(GPSConfigurationType.FOLLOWING_PLAYER);
 		followedPlayer = playerToFollow;
 		
-		player.setCompassTarget(followedPlayer.getLocation());
-		player.sendMessage("Your GPS is now following player '" + followedPlayer.getDisplayName() + "'");
+		setFollowedPlayerName(followedPlayer.getName());
+		
+		setLocation(followedPlayer.getLocation());
 	}
 	
-	public void setLocation (double x, double y, double z)
+	public void setExactLocation (double x, double y, double z)
 	{
 		setType(GPSConfigurationType.EXACT_LOCATION);
-		exactLocation = new Location(player.getWorld(), x, y, z);
 		
-		player.setCompassTarget(exactLocation);
-		player.sendMessage("Your GPS is now pointing at (x=" + x + ", y=" + y + ", z=" + z + ")");
+		setLocation(x, y, z);
 	}
 	
-	public void setLocation (Location location)
+	public void setExactLocation (Location location)
 	{
-		setLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+		setExactLocation(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 	
 	public void reset ()
 	{
 		setType(GPSConfigurationType.SPAWN);
 		
-		player.setCompassTarget(player.getWorld().getSpawnLocation());
-		player.sendMessage("Your GPS is now pointed at Spawn");
+		setLocation(player.getWorld().getSpawnLocation());
 	}
 }

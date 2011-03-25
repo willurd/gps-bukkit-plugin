@@ -62,7 +62,7 @@ public class PointToAction extends GPSAction
 		
 		// Grab this player's GPS configuration object and update it.
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
-		config.setLocation(newLocation);
+		config.setExactLocation(newLocation);
 		
 		return true;
 	}

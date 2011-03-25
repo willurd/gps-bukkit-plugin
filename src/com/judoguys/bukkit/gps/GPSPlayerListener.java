@@ -17,6 +17,7 @@ package com.judoguys.bukkit.gps;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,21 +52,62 @@ public class GPSPlayerListener extends PlayerListener
 	public void onPlayerJoin (PlayerEvent event)
 	{
 		Player player = event.getPlayer();
-		String name = player.getName();
+		String playerName = player.getName();
 		
-		if (getPlugin().configurations.containsKey(name)) {
+		// Iterate over the configurations and update any that are following
+		// this player.
+		for (GPSConfiguration config : getPlugin().configurations.values()) {
+			if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
+				config.getFollowedPlayerName().equalsIgnoreCase(playerName)) {
+				// This will update the config object with the new Player instance
+				// for this player. This has the added bonus of notifying the owner
+				// of the config object that their compass is now following the
+				// player (because previously GPS told them the player was logged
+				// off and it was simply pointing at their last known location; now
+				// it's actually following them again).
+				config.follow(player);
+			}
+		}
+		
+		GPSConfiguration config;
+		
+		// See if we already have a config object for this player (we will
+		// if they have logged in since the server was started).
+		if (getPlugin().configurations.containsKey(playerName)) {
 			// The configuration object for this player already exists
 			// (there was a save file for it); just return.
+			config = getPlugin().configurations.get(playerName);
+			config.setPlayer(player); // Pass the new player object to the config.
+			config.refreshLocation();
 			return;
 		}
 		
-		log.info(getPlugin().getLabel() + " Creating default config for player: " + name);
+		// There is no config object for this player -- see if there's a
+		// config file to load for them.
+		log.info(getPlugin().getLabel() + " Searching for player config file");
 		
-		GPSConfiguration config = new GPSConfiguration(plugin);
+		File configFile = GPSConfiguration.configFileFor(playerName, getPlugin());
+		
+		if (configFile.exists()) {
+			// The config file exists -- try to load it.
+			try {
+				config = GPSConfiguration.readFrom(configFile, getPlugin());
+				getPlugin().configurations.put(playerName, config);
+				return;
+			} catch (Exception e) {
+				log.info(getPlugin().getLabel() + " Error loading config file for " + playerName + ": " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+		// Either the config file doesn't exist or there was an error reading
+		// it (possibly it was formatted improperly?).
+		log.info(getPlugin().getLabel() + " Creating default config for " + playerName);
+		
+		config = new GPSConfiguration(plugin);
 		config.setPlayer(player);
 		config.reset();
-		
-		getPlugin().configurations.put(name, config);
+		getPlugin().configurations.put(playerName, config);
 	}
 	
 	/**
@@ -82,18 +124,20 @@ public class GPSPlayerListener extends PlayerListener
 		Player movedPlayer = event.getPlayer();
 		Location location = movedPlayer.getLocation();
 		
-		Iterator<GPSConfiguration> it = getPlugin().configurations.values().iterator();
-		while (it.hasNext()) {
+		for (GPSConfiguration config : getPlugin().configurations.values()) {
 			// Iterate through each configuration object, checking for
 			// any that are following the player that just moved.
-			GPSConfiguration config = it.next();
-			if (config.getType() == GPSConfigurationType.FOLLOWING_PLAYER &&
-				config.getFollowedPlayer() == movedPlayer) {
+			if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
+				config.getFollowedPlayer() != null &&
+				config.getFollowedPlayer().equals(movedPlayer)) {
 				// The player that moved is being followed by the player that
-				// owns this configuration object; set the owner's compass target
-				// to be the new location.
+				// owns this configuration object.
 				Player player = config.getPlayer();
-				player.setCompassTarget(location);
+				if (player.getWorld().equals(movedPlayer.getWorld())) {
+					// Both players are in the same world; set the owner's location
+					// to be the new location.
+					config.setLocation(location);
+				}
 			}
 		}
 	}
