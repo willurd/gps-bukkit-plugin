@@ -37,3 +37,7 @@
 * Implement permissions...maybe
   * Should I support it or wait until it's supported natively?
 * Make the command configurable...maybe
+
+## Far Off Plans
+
+* If Bukkit ever gets a graphics api it would be awesome to have a command like /gps route <location> which would light up the blocks along the most efficient route from you to the location you specify
