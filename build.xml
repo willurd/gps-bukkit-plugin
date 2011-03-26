@@ -1,7 +1,9 @@
 <project name="GPS" default="dist" basedir=".">
-	<property name="pluginname" value="GPS"/>
+	<property environment="env" />
+	
+	<property name="pluginname" value="GPS" />
 	<property name="bukkit.jar" location="/development/minecraft/bukkit/bukkit-0.0.1-SNAPSHOT.jar"/>
-	<property name="plugins" location="/Users/wbowers/Desktop/Bukkit Server/plugins/"/>
+	<property name="plugins.dir" location="${env.MINECRAFT_SERVER_PATH}/plugins/"/>
 
 	<property name="src" location="src" />
 	<property name="bin" location="bin" />
@@ -28,7 +30,7 @@
 	</target>
 	
 	<target name="deploy" depends="dist">
-		<copy file="${dist}/${pluginname}.jar" todir="${plugins}" />
+		<copy file="${dist}/${pluginname}.jar" todir="${plugins.dir}" />
 	</target>
 	
 	<target name="clean">

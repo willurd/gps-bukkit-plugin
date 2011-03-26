@@ -274,6 +274,20 @@ public class GPSConfiguration
 		setLocation(followedPlayer.getLocation());
 	}
 	
+	public void updateFollowedPlayerLocation ()
+	{
+		updateLocation(followedPlayer.getLocation());
+	}
+	
+	public void updateLocation (Location location)
+	{
+		this.location = location;
+		
+		// Only apply the new location. Don't notify the user as this
+		// is just an update (don't spam their chat).
+		applyLocation();
+	}
+	
 	public void setExactLocation (double x, double y, double z)
 	{
 		setType(GPSConfigurationType.EXACT_LOCATION);

@@ -17,14 +17,17 @@ package com.judoguys.bukkit.gps.actions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.gps.GPS;
+import com.judoguys.bukkit.gps.GPSAction;
+import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+
+import java.lang.NumberFormatException;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 
 /**
  * /<command> pointto x y z
@@ -55,9 +58,32 @@ public class PointToAction extends GPSAction
 		String xString = args[1];
 		String yString = args[2];
 		String zString = args[3];
-		Double x = Double.parseDouble(xString);
-		Double y = Double.parseDouble(yString);
-		Double z = Double.parseDouble(zString);
+		
+		Double x;
+		Double y;
+		Double z;
+		
+		try {
+			x = Double.parseDouble(xString);
+		} catch (NumberFormatException e) {
+			player.sendMessage(ChatColor.RED + " Invalid x coordinate: '" + xString + "' is not a number");
+			return true;
+		}
+		
+		try {
+			y = Double.parseDouble(yString);
+		} catch (NumberFormatException e) {
+			player.sendMessage(ChatColor.RED + " Invalid y coordinate: '" + yString + "' is not a number");
+			return true;
+		}
+		
+		try {
+			z = Double.parseDouble(zString);
+		} catch (NumberFormatException e) {
+			player.sendMessage(ChatColor.RED + " Invalid z coordinate: '" + zString + "' is not a number");
+			return true;
+		}
+		
 		Location newLocation = new Location(player.getWorld(), x, y, z);
 		
 		// Grab this player's GPS configuration object and update it.

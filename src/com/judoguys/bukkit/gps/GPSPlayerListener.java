@@ -136,7 +136,7 @@ public class GPSPlayerListener extends PlayerListener
 				if (player.getWorld().equals(movedPlayer.getWorld())) {
 					// Both players are in the same world; set the owner's location
 					// to be the new location.
-					config.setLocation(location);
+					config.updateLocation(location);
 				}
 			}
 		}
