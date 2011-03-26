@@ -285,6 +285,38 @@ public class GPSConfiguration
 		}
 	}
 	
+	/**
+	 * Sets isHidden to true and notifies the player. If it is
+	 * already true, it notifies the player of that as well.
+	 */
+	public void hide ()
+	{
+		// Make sure they arent already hidden.
+		if (getIsHidden()) {
+			MessageUtils.sendWarning(getPlayer(), "You are already hidden from GPS");
+			return;
+		}
+		
+		setIsHidden(true);
+		MessageUtils.sendSuccess(getPlayer(), "You are now hidden from GPS");
+	}
+	
+	/**
+	 * Sets isHidden to false and notifies the player. If it is
+	 * already false, it notifies the player of that as well.
+	 */
+	public void unhide ()
+	{
+		// Make sure they are actually hidden first.
+		if (!getIsHidden()) {
+			MessageUtils.sendWarning(player, "You are already not hidden from GPS");
+			return;
+		}
+		
+		setIsHidden(false);
+		MessageUtils.sendSuccess(player, "You are no longer hidden from GPS");
+	}
+	
 	public void refreshLocation ()
 	{
 		applyLocation();

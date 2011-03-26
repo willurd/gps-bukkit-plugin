@@ -66,23 +66,9 @@ public class SetIsHiddenAction extends GPSAction
 		
 		// Is this player trying to hide or unhide themselves?
 		if (hidesPlayer) {
-			// They are trying to hide themselves; make sure they arent
-			// already hidden.
-			if (config.getIsHidden()) {
-				MessageUtils.sendWarning(player, "You are already hidden from GPS");
-				return true;
-			}
-			config.setIsHidden(true);
-			MessageUtils.sendSuccess(player, "You are now hidden from GPS");
+			config.hide();
 		} else {
-			// They are trying to unhide themselves; make sure they are
-			// actually hidden first.
-			if (!config.getIsHidden()) {
-				MessageUtils.sendWarning(player, "You are already not hidden from GPS");
-				return true;
-			}
-			config.setIsHidden(false);
-			MessageUtils.sendSuccess(player, "You are no longer hidden from GPS");
+			config.unhide();
 		}
 		
 		return true;
