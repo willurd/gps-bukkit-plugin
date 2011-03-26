@@ -19,17 +19,18 @@
 * find <player>
 * follow <player>
 * pointto x y z
-* reset - Points to spawn
+* reset
+* hide
+* unhide
 
 ### To do
 
+* status
 * pointto x y z [<name>]
 * pointto <name>
 * name x y z <name>
 * remove <name>
 * list
-* hide
-* unhide
 * where - where your GPS is currently pointed
 * where <name> - location of <name>
 * whereami - where you are now

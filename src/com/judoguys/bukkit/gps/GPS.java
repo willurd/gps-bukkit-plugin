@@ -178,7 +178,7 @@ public class GPS extends JavaPlugin
 			}
 		}
 		
-		return true;
+		return super.onCommand(sender, cmd, label, args);
 	}
 	
 	/**
