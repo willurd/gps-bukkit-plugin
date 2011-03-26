@@ -14,6 +14,7 @@ commands:
            /<command> reset - Points to spawn
            /<command> hide - Prevents you from being located
            /<command> unhide - Allows you to be located
+           /<command> help - Displays the usage of /<command>
 
 # /<command> status - Tells you your current GPS settings
 

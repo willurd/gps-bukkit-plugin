@@ -25,6 +25,7 @@ import com.judoguys.bukkit.gps.actions.FollowAction;
 import com.judoguys.bukkit.gps.actions.PointToAction;
 import com.judoguys.bukkit.gps.actions.ResetAction;
 import com.judoguys.bukkit.gps.actions.SetIsHiddenAction;
+import com.judoguys.bukkit.gps.actions.UsageAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 import com.judoguys.bukkit.utils.CommandUtils;
 import com.judoguys.bukkit.utils.MessageUtils;
@@ -239,6 +240,7 @@ public class GPS extends JavaPlugin
 	{
 		commandHandler = new CommandHandler(this);
 		
+		commandHandler.addAction(new UsageAction(this));
 		commandHandler.addAction(new FindAction(this));
 		commandHandler.addAction(new FollowAction(this));
 		commandHandler.addAction(new PointToAction(this));

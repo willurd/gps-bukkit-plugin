@@ -59,13 +59,9 @@ public class CommandHandler
 	public boolean handleCommand (CommandSender sender, Command command,
 		String label, String[] args) throws InvalidCommandException
 	{
-		if (args.length == 0) {
-			throw new InvalidCommandException("Command must have at least one argument, the action.");
-		}
-		
 		Iterator<Action> it = actions.values().iterator();
-		while (it.hasNext()) {
-			Action action = it.next();
+		
+		for (Action action : getActions()) {
 			if (action.execute(sender, command, label, args)) {
 				// This action handled the command.
 				return true;
