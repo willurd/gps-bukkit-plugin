@@ -17,6 +17,17 @@ package com.judoguys.bukkit.gps;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.commands.Action;
+import com.judoguys.bukkit.commands.CommandHandler;
+import com.judoguys.bukkit.commands.InvalidCommandException;
+import com.judoguys.bukkit.gps.actions.FindAction;
+import com.judoguys.bukkit.gps.actions.FollowAction;
+import com.judoguys.bukkit.gps.actions.PointToAction;
+import com.judoguys.bukkit.gps.actions.ResetAction;
+import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.bukkit.utils.CommandUtils;
+import com.judoguys.bukkit.utils.MessageUtils;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,15 +43,6 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.judoguys.bukkit.commands.Action;
-import com.judoguys.bukkit.commands.CommandHandler;
-import com.judoguys.bukkit.commands.InvalidCommandException;
-import com.judoguys.bukkit.gps.actions.FindAction;
-import com.judoguys.bukkit.gps.actions.FollowAction;
-import com.judoguys.bukkit.gps.actions.PointToAction;
-import com.judoguys.bukkit.gps.actions.ResetAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 
 /**
  * GPS - A plugin that provides location-based information and compass
@@ -157,7 +159,7 @@ public class GPS extends JavaPlugin
 		
 		if (name.equalsIgnoreCase(COMMAND_NAME)) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("GPS can only be used by players");
+				MessageUtils.sendError(sender, "GPS can only be used in game");
 				return true;
 			}
 			
@@ -170,8 +172,7 @@ public class GPS extends JavaPlugin
 				
 				return handled;
 			} catch (InvalidCommandException ex) {
-				// FIXME: What is label and how do I get the full command?
-				sender.sendMessage("Invalid command: " + label);
+				MessageUtils.sendError(sender, "Invalid command: " + CommandUtils.buildCommandString(cmd, args));
 				return false;
 			}
 		}

@@ -25,6 +25,7 @@ import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 import com.judoguys.bukkit.gps.configuration.GPSConfigurationType;
+import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * /<command> follow <player-name>
@@ -57,25 +58,25 @@ public class FollowAction extends GPSAction
 		// Notify the player if they are already following this player.
 		if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
 			config.getFollowedPlayerName().equalsIgnoreCase(playerName)) {
-				player.sendMessage("You are already following " + playerName);
+				MessageUtils.sendError(player, "You are already following " + playerName);
 			return true;
 		}
 		
 		// Check to make sure their logged in.
 		if (playerToFollow == null) {
-			player.sendMessage("Player " + playerName + " is not logged in");
+			MessageUtils.sendError(player, "Player " + playerName + " is not logged in");
 			return true;
 		}
 		
 		// Make sure the player isn't trying to follow themself.
 		if (player == playerToFollow) {
-			player.sendMessage("You can't follow yourself");
+			MessageUtils.sendError(player, "You can't follow yourself");
 			return true;
 		}
 		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFollow.getWorld()) {
-			player.sendMessage("Player " + playerName + " is not in this world");
+			MessageUtils.sendError(player, "Player " + playerName + " is not in this world");
 			return true;
 		}
 		

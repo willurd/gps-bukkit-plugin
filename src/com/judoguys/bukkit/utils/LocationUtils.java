@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.utils;
+package com.judoguys.bukkit.utils;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>

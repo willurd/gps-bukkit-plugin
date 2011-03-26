@@ -17,9 +17,6 @@ package com.judoguys.bukkit.gps.configuration;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.utils.LocationUtils;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -29,6 +26,10 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
+
+import com.judoguys.bukkit.gps.GPS;
+import com.judoguys.bukkit.utils.LocationUtils;
+import com.judoguys.bukkit.utils.MessageUtils;
 
 public class GPSConfiguration
 {
@@ -248,18 +249,18 @@ public class GPSConfiguration
 		{
 		case FOLLOWING_PLAYER:
 			if (getFollowedPlayer() != null) {
-				player.sendMessage("GPS is now following " + getFollowedPlayer().getDisplayName());
+				MessageUtils.sendSuccess(player, "GPS is now following " + getFollowedPlayer().getDisplayName());
 			} else {
-				player.sendMessage(getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
+				MessageUtils.sendWarning(player, getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
 			}
 			break;
 		
 		case EXACT_LOCATION:
-			player.sendMessage("GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
+			MessageUtils.sendSuccess(player, "GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
 			break;
 		
 		case SPAWN:
-			player.sendMessage("GPS is now pointed at Spawn");
+			MessageUtils.sendSuccess(player, "GPS is now pointed at Spawn");
 			break;
 		}
 	}

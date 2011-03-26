@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * /<command> find <player-name>`
@@ -53,13 +54,13 @@ public class FindAction extends GPSAction
 		Player playerToFind = getPlugin().getServer().getPlayer(playerName);
 		
 		if (playerToFind == null) {
-			player.sendMessage("Player '" + playerName + "' is not logged in");
+			MessageUtils.sendError(player, "Player '" + playerName + "' is not logged in");
 			return true;
 		}
 		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFind.getWorld()) {
-			player.sendMessage("Player '" + playerName + "' is not in this world");
+			MessageUtils.sendError(player, "Player '" + playerName + "' is not in this world");
 			return true;
 		}
 		
