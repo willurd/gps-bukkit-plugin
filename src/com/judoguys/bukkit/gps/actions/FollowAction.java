@@ -36,7 +36,7 @@ public class FollowAction extends GPSAction
 {
 	public FollowAction (GPS plugin)
 	{
-		super(plugin, "follow", "/<command> follow <player-name> - Follows a given player as they move");
+		super(plugin, "follow", "/<command> follow <player> - Follows a player as they move");
 	}
 
 	@Override
@@ -56,15 +56,14 @@ public class FollowAction extends GPSAction
 		Player playerToFollow = getPlugin().getServer().getPlayer(playerName);
 		
 		// Notify the player if they are already following this player.
-		if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
-			config.getFollowedPlayerName().equalsIgnoreCase(playerName)) {
-				MessageUtils.sendError(player, "You are already following " + playerName);
+		if (config.isFollowing(playerToFollow)) {
+			MessageUtils.sendError(player, "You are already following " + playerName);
 			return true;
 		}
 		
 		// Check to make sure their logged in.
 		if (playerToFollow == null) {
-			MessageUtils.sendError(player, "Player " + playerName + " is not logged in");
+			MessageUtils.sendError(player, playerName + " is not logged in");
 			return true;
 		}
 		
@@ -74,9 +73,15 @@ public class FollowAction extends GPSAction
 			return true;
 		}
 		
+		// Make sure the player they are trying to follow isn't hidden.
+		if (!config.canLocate(playerToFollow)) {
+			MessageUtils.sendError(player, "You are unable to find " + playerName);
+			return true;
+		}
+		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFollow.getWorld()) {
-			MessageUtils.sendError(player, "Player " + playerName + " is not in this world");
+			MessageUtils.sendError(player, playerName + " is not in this world");
 			return true;
 		}
 		

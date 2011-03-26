@@ -45,7 +45,7 @@ public class GPSConfiguration
 	private String followedPlayerName;
 	
 	/**
-	 * Only used when type == GPSConfigurationType.FOLLOWING_PLAYER.
+	 * Only used when type is FOLLOWING_PLAYER.
 	 */
 	private Player followedPlayer;
 	
@@ -134,7 +134,7 @@ public class GPSConfiguration
 	
 	public void save ()
 	{
-		// TODO: Implement this.
+		// TODO: Implement GPS configuration saving.
 	}
 	
 	public GPS getPlugin ()
@@ -171,7 +171,7 @@ public class GPSConfiguration
 	{
 		type = value;
 		
-		if (type != GPSConfigurationType.FOLLOWING_PLAYER) {
+		if (!type.equals(GPSConfigurationType.FOLLOWING_PLAYER)) {
 			followedPlayer = null;
 		}
 	}
@@ -230,6 +230,27 @@ public class GPSConfiguration
 	public Player getFollowedPlayer ()
 	{
 		return followedPlayer;
+	}
+	
+	public boolean isFollowing (Player otherPlayer)
+	{
+		return getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
+			   getFollowedPlayer() != null &&
+			   getFollowedPlayer().equals(otherPlayer);
+	}
+	
+	public boolean canLocate (Player otherPlayer)
+	{
+		GPSConfiguration otherPlayerConfig = getPlugin().configurations.get(otherPlayer.getName());
+		
+		// This player is able to locate the other player if that
+		// player is not hidden, or this player is an op.
+		return !otherPlayerConfig.isHidden() || getPlayer().isOp();
+	}
+	
+	public boolean isHidden ()
+	{
+		return true; // FIXME: Always true until hiding is implemented.
 	}
 	
 	public void refreshLocation ()

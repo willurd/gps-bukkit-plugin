@@ -35,7 +35,7 @@ public class FindAction extends GPSAction
 {
 	public FindAction (GPS plugin)
 	{
-		super(plugin, "find", "/<command> find <player-name> - Points to the given players location when used");
+		super(plugin, "find", "/<command> find <player> - Locates a player");
 	}
 	
 	@Override
@@ -54,13 +54,13 @@ public class FindAction extends GPSAction
 		Player playerToFind = getPlugin().getServer().getPlayer(playerName);
 		
 		if (playerToFind == null) {
-			MessageUtils.sendError(player, "Player '" + playerName + "' is not logged in");
+			MessageUtils.sendError(player, playerName + " is not logged in");
 			return true;
 		}
 		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFind.getWorld()) {
-			MessageUtils.sendError(player, "Player '" + playerName + "' is not in this world");
+			MessageUtils.sendError(player, playerName + " is not in this world");
 			return true;
 		}
 		

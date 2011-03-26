@@ -41,7 +41,7 @@ public class PointToAction extends GPSAction
 {
 	public PointToAction (GPS plugin)
 	{
-		super(plugin, "pointto", "/<command> pointto x y z [<name>] - Points to a specific set of coordinates");
+		super(plugin, "pointto", "/<command> pointto x y z - Points to a specific location");
 	}
 
 	@Override

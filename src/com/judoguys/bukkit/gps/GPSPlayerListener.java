@@ -57,8 +57,7 @@ public class GPSPlayerListener extends PlayerListener
 		// Iterate over the configurations and update any that are following
 		// this player.
 		for (GPSConfiguration config : getPlugin().configurations.values()) {
-			if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
-				config.getFollowedPlayerName().equalsIgnoreCase(playerName)) {
+			if (config.isFollowing(player)) {
 				// This will update the config object with the new Player instance
 				// for this player. This has the added bonus of notifying the owner
 				// of the config object that their compass is now following the
@@ -127,9 +126,8 @@ public class GPSPlayerListener extends PlayerListener
 		for (GPSConfiguration config : getPlugin().configurations.values()) {
 			// Iterate through each configuration object, checking for
 			// any that are following the player that just moved.
-			if (config.getType().equals(GPSConfigurationType.FOLLOWING_PLAYER) &&
-				config.getFollowedPlayer() != null &&
-				config.getFollowedPlayer().equals(movedPlayer)) {
+			if (config.isFollowing(movedPlayer) &&
+				config.canLocate(movedPlayer)) {
 				// The player that moved is being followed by the player that
 				// owns this configuration object.
 				Player player = config.getPlayer();
