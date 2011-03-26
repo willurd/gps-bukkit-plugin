@@ -83,11 +83,12 @@ public class GPSPlayerListener extends PlayerListener
 		
 		// There is no config object for this player -- see if there's a
 		// config file to load for them.
-		log.info(getPlugin().getLabel() + " Searching for player config file");
+		log.info(getPlugin().getLabel() + " Searching for " + playerName + "'s config file");
 		
 		File configFile = GPSConfiguration.configFileFor(playerName, getPlugin());
 		
 		if (configFile.exists()) {
+			log.info(getPlugin().getLabel() + " Config file found");
 			// The config file exists -- try to load it.
 			try {
 				config = GPSConfiguration.readFrom(configFile, getPlugin());

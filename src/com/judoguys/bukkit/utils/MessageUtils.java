@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 
 public final class MessageUtils
 {	
+	public static ChatColor INFO_COLOR = ChatColor.WHITE;
 	public static ChatColor SUCCESS_COLOR = ChatColor.GREEN;
 	public static ChatColor WARNING_COLOR = ChatColor.YELLOW;
 	public static ChatColor ERROR_COLOR = ChatColor.RED;
@@ -29,6 +30,11 @@ public final class MessageUtils
 	public static void sendMessage (CommandSender sender, String message)
 	{
 		sender.sendMessage(message);
+	}
+	
+	public static void sendInfo (CommandSender sender, String message)
+	{
+		sendMessage(sender, INFO_COLOR + message);
 	}
 	
 	public static void sendSuccess (CommandSender sender, String message)

@@ -27,15 +27,29 @@ import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
- * /<command> find <player-name>`
+ * /<command> hide
+ *   OR
+ * /<command> unhide
  * 
- * Points to the given players location when used.
+ * Allows a player to hide and unhide themselves. When a player
+ * is hidden only ops will be able to locate them (and they will
+ * be able to location themselves).
  */
-public class FindAction extends GPSAction
+public class SetIsHiddenAction extends GPSAction
 {
-	public FindAction (GPS plugin)
+	private boolean hidesPlayer;
+	
+	public SetIsHiddenAction (GPS plugin, String name, boolean hidesPlayer,
+		String description)
 	{
-		super(plugin, "find", "/<command> find <player> - Locates a player");
+		super(plugin, name, "/<command> " + name + " - " + description);
+		
+		this.hidesPlayer = hidesPlayer;
+	}
+	
+	public boolean getHidesPlayer ()
+	{
+		return hidesPlayer;
 	}
 	
 	@Override
@@ -50,29 +64,26 @@ public class FindAction extends GPSAction
 		Player player = (Player)sender;
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		
-		// Get the player we'd like to find.
-		String playerName = args[1];
-		Player playerToFind = getPlugin().getServer().getPlayer(playerName);
-		
-		if (playerToFind == null) {
-			MessageUtils.sendError(player, playerName + " is not logged in");
-			return true;
+		// Is this player trying to hide or unhide themselves?
+		if (hidesPlayer) {
+			// They are trying to hide themselves; make sure they arent
+			// already hidden.
+			if (config.getIsHidden()) {
+				MessageUtils.sendWarning(player, "You are already hidden from GPS");
+				return true;
+			}
+			config.setIsHidden(true);
+			MessageUtils.sendSuccess(player, "You are now hidden from GPS");
+		} else {
+			// They are trying to unhide themselves; make sure they are
+			// actually hidden first.
+			if (!config.getIsHidden()) {
+				MessageUtils.sendWarning(player, "You are already not hidden from GPS");
+				return true;
+			}
+			config.setIsHidden(false);
+			MessageUtils.sendSuccess(player, "You are no longer hidden from GPS");
 		}
-		
-		// Make sure both players are in the same world.
-		if (player.getWorld() != playerToFind.getWorld()) {
-			MessageUtils.sendError(player, playerName + " is not in this world");
-			return true;
-		}
-		
-		// Make sure the player they are trying to follow isn't hidden.
-		if (!config.canLocate(playerToFind)) {
-			MessageUtils.sendError(player, "You are unable to find " + playerName);
-			return true;
-		}
-		
-		// Update the player's GPS configuration.
-		config.setExactLocation(playerToFind.getLocation());
 		
 		return true;
 	}
@@ -91,6 +102,6 @@ public class FindAction extends GPSAction
 			return false;
 		}
 		
-		return args.length == 2; // 'find', '<player-name>'
+		return args.length == 1; // 'hide' or 'unhide'
 	}
 }

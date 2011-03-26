@@ -31,6 +31,9 @@ import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.utils.LocationUtils;
 import com.judoguys.bukkit.utils.MessageUtils;
 
+/**
+ * FIXME: This class needs some major cleanup.
+ */
 public class GPSConfiguration
 {
 	public static String CONFIG_FILE_EXTENSION = "yml";
@@ -41,15 +44,18 @@ public class GPSConfiguration
 	private Player player;
 	private GPSConfigurationType type;
 	private HashMap<String, Location> namedLocations;
-	
 	private String followedPlayerName;
+	private Location location;
+	
+	/**
+	 * FIXME: Always true until hiding is implemented.
+	 */
+	private boolean isHidden;
 	
 	/**
 	 * Only used when type is FOLLOWING_PLAYER.
 	 */
 	private Player followedPlayer;
-	
-	private Location location;
 	
 	public GPSConfiguration (GPS plugin)
 	{
@@ -85,6 +91,7 @@ public class GPSConfiguration
 		Configuration configFile = new Configuration(file);
 		configFile.load();
 		
+		// Load which player this is for.
 		String playerName = configFile.getString("player");
 		Player player = server.getPlayer(playerName);
 		
@@ -96,6 +103,14 @@ public class GPSConfiguration
 		config.setPlayerName(playerName);
 		config.setPlayer(player);
 		
+		// Load whether this player is hidden from being located by
+		// non-ops. If no value is specified, default to false (meaning
+		// this player can be located by other players).
+		config.setIsHidden(configFile.getBoolean("ishidden", false));
+		config.notifyIsHidden();
+		
+		// Load the type of their GPS configuration (corresponds to
+		// GPSConfigurationType).
 		String typeString = configFile.getString("type");
 		config.setType(GPSConfigurationType.valueOf(typeString));
 		
@@ -244,13 +259,30 @@ public class GPSConfiguration
 		GPSConfiguration otherPlayerConfig = getPlugin().configurations.get(otherPlayer.getName());
 		
 		// This player is able to locate the other player if that
-		// player is not hidden, or this player is an op.
-		return !otherPlayerConfig.isHidden() || getPlayer().isOp();
+		// player is not hidden, or this player is an op, or it's
+		// the same player (they can always locate themselves).
+		return !otherPlayerConfig.getIsHidden() ||
+			   getPlayer().isOp() ||
+			   getPlayer().equals(otherPlayer);
 	}
 	
-	public boolean isHidden ()
+	public boolean getIsHidden ()
 	{
-		return true; // FIXME: Always true until hiding is implemented.
+		return isHidden;
+	}
+	
+	public void setIsHidden (boolean value)
+	{
+		isHidden = value;
+	}
+	
+	public void notifyIsHidden ()
+	{
+		if (getIsHidden()) {
+			MessageUtils.sendInfo(getPlayer(), "You are hidden from GPS");
+		} else {
+			MessageUtils.sendInfo(getPlayer(), "You are not hidden from GPS");
+		}
 	}
 	
 	public void refreshLocation ()
@@ -270,18 +302,18 @@ public class GPSConfiguration
 		{
 		case FOLLOWING_PLAYER:
 			if (getFollowedPlayer() != null) {
-				MessageUtils.sendSuccess(player, "GPS is now following " + getFollowedPlayer().getDisplayName());
+				MessageUtils.sendSuccess(getPlayer(), "GPS is now following " + getFollowedPlayer().getDisplayName());
 			} else {
-				MessageUtils.sendWarning(player, getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
+				MessageUtils.sendWarning(getPlayer(), getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
 			}
 			break;
 		
 		case EXACT_LOCATION:
-			MessageUtils.sendSuccess(player, "GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
+			MessageUtils.sendSuccess(getPlayer(), "GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
 			break;
 		
 		case SPAWN:
-			MessageUtils.sendSuccess(player, "GPS is now pointed at Spawn");
+			MessageUtils.sendSuccess(getPlayer(), "GPS is now pointed at Spawn");
 			break;
 		}
 	}

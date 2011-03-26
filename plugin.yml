@@ -12,14 +12,16 @@ commands:
            /<command> follow <player> - Follows a player as they move
            /<command> pointto x y z - Points to a specific location
            /<command> reset - Points to spawn
+           /<command> hide - Prevents you from being located
+           /<command> unhide - Allows you to be located
+
+# /<command> status - Tells you your current GPS settings
 
 # /<command> pointto <name> - Points to the name of a set of named coordinates
 # /<command> name x y z <name> - Names a set of corrdinates without pointing to them
 # /<command> remove <name> - Removes a set of named coordinates
 # /<command> list - Lists all named coordinates
 
-# /<command> hide - Hide yourself so others can't point their compasses to you (except admins)
-# /<command> unhide - Allow others to point their compasses to you
 # /<command> where - Tells you where your compass is currently pointed
 # /<command> where <name> - Tells you the coordinates pointed to by <name>
 # /<command> whereami - Tells you the coordinates where you are now
