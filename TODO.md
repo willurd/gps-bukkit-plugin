@@ -10,6 +10,8 @@
 * Update the compass when a player's spawn changes
 * Make use of the default config file: <data-folder>/config.yml
 * Consider removing the z coordinate from commands, as it doesn't actually do anything for the compass
+* Think about implementing permissions...maybe
+  * Should I support it or wait until it's supported natively?
 
 ## Commands
 
@@ -33,12 +35,6 @@
 * where - where your GPS is currently pointed
 * where <name> - location of <name>
 * whereami - where you are now
-
-## Features
-
-* Implement permissions...maybe
-  * Should I support it or wait until it's supported natively?
-* Make the command configurable...maybe
 
 ## Far Off Plans
 

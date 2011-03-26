@@ -157,25 +157,25 @@ public class GPS extends JavaPlugin
 	public boolean onCommand (CommandSender sender, Command cmd,
 		String label, String[] args)
 	{
-		String name = cmd.getName();
-		
-		if (name.equalsIgnoreCase(COMMAND_NAME)) {
-			if (!(sender instanceof Player)) {
-				MessageUtils.sendError(sender, "GPS can only be used in game");
-				return true;
-			}
-			
-			try {
-				boolean handled = commandHandler.handleCommand(sender, cmd, label, args);
-				
-				if (!handled) {
-					throw new InvalidCommandException("Invalid command");
+		if (isEnabled()) {
+			if (label.equalsIgnoreCase(COMMAND_NAME)) {
+				if (!(sender instanceof Player)) {
+					MessageUtils.sendError(sender, "GPS can only be used in game");
+					return true;
 				}
 				
-				return handled;
-			} catch (InvalidCommandException ex) {
-				MessageUtils.sendError(sender, "Invalid command: " + CommandUtils.buildCommandString(cmd, args));
-				return false;
+				try {
+					boolean handled = commandHandler.handleCommand(sender, cmd, label, args);
+					
+					if (!handled) {
+						throw new InvalidCommandException("Invalid command");
+					}
+					
+					return handled;
+				} catch (InvalidCommandException ex) {
+					MessageUtils.sendError(sender, "Invalid command: " + CommandUtils.buildCommandString(cmd, args));
+					return false;
+				}
 			}
 		}
 		
