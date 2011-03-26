@@ -8,9 +8,9 @@ commands:
     description: Changes where your compass points
     usage: |
            Usage of /<command>:
-           /<command> find <player-name> - Points to the given players location when used
-           /<command> follow <player-name> - Follows a given player as they move
-           /<command> pointto x y z [<name>] - Points to a specific set of coordinates
+           /<command> find <player-name> - Locates a player
+           /<command> follow <player-name> - Follows a player as they move
+           /<command> pointto x y z - Points to a specific location
            /<command> reset - Points to spawn
 
 # /<command> pointto <name> - Points to the name of a set of named coordinates
