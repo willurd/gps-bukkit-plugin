@@ -21,10 +21,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
-import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * /<command> follow <player-name>
@@ -46,6 +46,8 @@ public class FollowAction extends GPSAction
 			return false;
 		}
 		
+		Chat chat = getPlugin().getChat();
+		
 		// Get the player that executed this command.
 		Player player = (Player)sender;
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
@@ -56,31 +58,31 @@ public class FollowAction extends GPSAction
 		
 		// Notify the player if they are already following this player.
 		if (config.isFollowing(playerToFollow)) {
-			MessageUtils.sendError(player, "You are already following " + playerName);
+			chat.error(player, "You are already following " + playerName);
 			return true;
 		}
 		
 		// Check to make sure their logged in.
 		if (playerToFollow == null) {
-			MessageUtils.sendError(player, playerName + " is not logged in");
+			chat.error(player, playerName + " is not logged in");
 			return true;
 		}
 		
 		// Make sure the player isn't trying to follow themself.
 		if (player == playerToFollow) {
-			MessageUtils.sendError(player, "You can't follow yourself");
+			chat.error(player, "You can't follow yourself");
 			return true;
 		}
 		
 		// Make sure the player they are trying to follow isn't hidden.
 		if (!config.canLocate(playerToFollow)) {
-			MessageUtils.sendError(player, "You are unable to find " + playerName);
+			chat.error(player, "You are unable to find " + playerName);
 			return true;
 		}
 		
 		// Make sure both players are in the same world.
 		if (player.getWorld() != playerToFollow.getWorld()) {
-			MessageUtils.sendError(player, playerName + " is not in this world");
+			chat.error(player, playerName + " is not in this world");
 			return true;
 		}
 		

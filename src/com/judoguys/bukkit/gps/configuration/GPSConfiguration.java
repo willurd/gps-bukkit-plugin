@@ -26,9 +26,9 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
 
+import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.utils.LocationUtils;
-import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * FIXME: This class needs some major cleanup.
@@ -279,10 +279,12 @@ public class GPSConfiguration
 	
 	public void notifyIsHidden ()
 	{
+		Chat chat = getPlugin().getChat();
+		
 		if (getIsHidden()) {
-			MessageUtils.sendInfo(getPlayer(), "You are hidden from GPS");
+			chat.info(getPlayer(), "You are hidden from GPS");
 		} else {
-			MessageUtils.sendInfo(getPlayer(), "You are not hidden from GPS");
+			chat.info(getPlayer(), "You are not hidden from GPS");
 		}
 	}
 	
@@ -292,14 +294,16 @@ public class GPSConfiguration
 	 */
 	public void hide ()
 	{
+		Chat chat = getPlugin().getChat();
+		
 		// Make sure they arent already hidden.
 		if (getIsHidden()) {
-			MessageUtils.sendWarning(getPlayer(), "You are already hidden from GPS");
+			chat.warning(getPlayer(), "You are already hidden from GPS");
 			return;
 		}
 		
 		setIsHidden(true);
-		MessageUtils.sendSuccess(getPlayer(), "You are now hidden from GPS");
+		chat.success(getPlayer(), "You are now hidden from GPS");
 	}
 	
 	/**
@@ -308,14 +312,16 @@ public class GPSConfiguration
 	 */
 	public void unhide ()
 	{
+		Chat chat = getPlugin().getChat();
+		
 		// Make sure they are actually hidden first.
 		if (!getIsHidden()) {
-			MessageUtils.sendWarning(player, "You are already not hidden from GPS");
+			chat.warning(player, "You are already not hidden from GPS");
 			return;
 		}
 		
 		setIsHidden(false);
-		MessageUtils.sendSuccess(player, "You are no longer hidden from GPS");
+		chat.success(player, "You are no longer hidden from GPS");
 	}
 	
 	public void refreshLocation ()
@@ -331,22 +337,24 @@ public class GPSConfiguration
 	
 	public void notifyLocation ()
 	{
+		Chat chat = getPlugin().getChat();
+		
 		switch (getType())
 		{
 		case FOLLOWING_PLAYER:
 			if (getFollowedPlayer() != null) {
-				MessageUtils.sendSuccess(getPlayer(), "GPS is now following " + getFollowedPlayer().getDisplayName());
+				chat.success(getPlayer(), "GPS is now following " + getFollowedPlayer().getDisplayName());
 			} else {
-				MessageUtils.sendWarning(getPlayer(), getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
+				chat.warning(getPlayer(), getFollowedPlayerName() + " is offline -- GPS is pointing at last known location: " + LocationUtils.locationToString(getLocation()));
 			}
 			break;
 		
 		case EXACT_LOCATION:
-			MessageUtils.sendSuccess(getPlayer(), "GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
+			chat.success(getPlayer(), "GPS is now pointing at " + LocationUtils.locationToString(getLocation()));
 			break;
 		
 		case SPAWN:
-			MessageUtils.sendSuccess(getPlayer(), "GPS is now pointed at Spawn");
+			chat.success(getPlayer(), "GPS is now pointed at Spawn");
 			break;
 		}
 	}

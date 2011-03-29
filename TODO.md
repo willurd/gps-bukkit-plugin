@@ -35,6 +35,11 @@
 * where - where your GPS is currently pointed
 * where <name> - location of <name>
 * whereami - where you are now
+* notify - Turn on notifications (when someone points their GPS at you)
+  - Player1's GPS is now tracking you
+  - Player1's GPS is no longer tracking you
+  - Player1's GPS is pointed at your current location
+* unnotify - Turn off notifications
 
 ## Far Off Plans
 

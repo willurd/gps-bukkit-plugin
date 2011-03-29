@@ -17,6 +17,7 @@ package com.judoguys.bukkit.gps;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.commands.CommandHandler;
 import com.judoguys.bukkit.commands.InvalidCommandException;
 import com.judoguys.bukkit.gps.actions.FindAction;
@@ -27,7 +28,6 @@ import com.judoguys.bukkit.gps.actions.SetIsHiddenAction;
 import com.judoguys.bukkit.gps.actions.UsageAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 import com.judoguys.bukkit.utils.CommandUtils;
-import com.judoguys.bukkit.utils.MessageUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -52,6 +52,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *     they move.
  *   - Point their compass to spawn.
  *   - Point their compass at a specific set of coordinates.
+ *   - Disallow others from locating them using GPS (and reallow).
  * 
  * In the future, will allow players to:
  *   - Save all of their settings so they persist across server runs. ^_^
@@ -59,7 +60,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  *   - List all of their named coordinates.
  *   - Find out how far (in blocks) they are away from a location
  *     or player.
- *   - Disallow others from locating them using GPS (and reallow).
  *   - See where their compass is currently pointing.
  *   - See the coordinates of a named location or player.
  *   - See the coordinates of where they are currently standing.
@@ -74,8 +74,9 @@ public class GPS extends JavaPlugin
 	public PluginManager pm;
 	public HashMap<String, GPSConfiguration> configurations;
 	
-	private GPSPlayerListener playerListener;
+	private Chat chat;
 	private CommandHandler commandHandler;
+	private GPSPlayerListener playerListener;
 	private PluginDescriptionFile desc;
 	private File playersFolder;
 	private String version;
@@ -83,7 +84,12 @@ public class GPS extends JavaPlugin
 	
 	public GPS ()
 	{
-		// Does nothing.
+		chat = new Chat(this);
+	}
+	
+	public Chat getChat ()
+	{
+		return chat;
 	}
 	
 	/**
@@ -155,8 +161,10 @@ public class GPS extends JavaPlugin
 	{
 		if (isEnabled()) {
 			if (label.equalsIgnoreCase(COMMAND_NAME)) {
+				Chat chat = getChat();
+				
 				if (!(sender instanceof Player)) {
-					MessageUtils.sendError(sender, "GPS can only be used in game");
+					chat.error(sender, "GPS can only be used in game");
 					return true;
 				}
 				
@@ -169,7 +177,7 @@ public class GPS extends JavaPlugin
 					
 					return handled;
 				} catch (InvalidCommandException ex) {
-					MessageUtils.sendError(sender, "Invalid command: " + CommandUtils.buildCommandString(cmd, args));
+					chat.error(sender, "Invalid command: " + CommandUtils.buildCommandString(cmd, args));
 					return false;
 				}
 			}

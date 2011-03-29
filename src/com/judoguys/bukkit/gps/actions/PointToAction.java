@@ -24,10 +24,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
-import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * /<command> pointto x y z
@@ -51,6 +51,8 @@ public class PointToAction extends GPSAction
 			return false;
 		}
 		
+		Chat chat = getPlugin().getChat();
+		
 		// Get the player that executed this command.
 		Player player = (Player)sender;
 		
@@ -66,21 +68,21 @@ public class PointToAction extends GPSAction
 		try {
 			x = Double.parseDouble(xString);
 		} catch (NumberFormatException e) {
-			MessageUtils.sendError(player, "Invalid x coordinate: '" + xString + "' is not a number");
+			chat.error(player, "Invalid x coordinate: '" + xString + "' is not a number");
 			return true;
 		}
 		
 		try {
 			y = Double.parseDouble(yString);
 		} catch (NumberFormatException e) {
-			MessageUtils.sendError(player, "Invalid y coordinate: '" + yString + "' is not a number");
+			chat.error(player, "Invalid y coordinate: '" + yString + "' is not a number");
 			return true;
 		}
 		
 		try {
 			z = Double.parseDouble(zString);
 		} catch (NumberFormatException e) {
-			MessageUtils.sendError(player, "Invalid z coordinate: '" + zString + "' is not a number");
+			chat.error(player, "Invalid z coordinate: '" + zString + "' is not a number");
 			return true;
 		}
 		

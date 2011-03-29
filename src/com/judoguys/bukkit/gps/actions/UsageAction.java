@@ -21,9 +21,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.utils.MessageUtils;
 
 /**
  * /<command> reset
@@ -47,12 +47,14 @@ public class UsageAction extends GPSAction
 			return false;
 		}
 		
+		Chat chat = getPlugin().getChat();
+		
 		String usage = command.getUsage();
 		
 		// The next couple of lines were unashamedly borrowed with
 		// very little modification from the Bukkit source.
 		for (String line : usage.replace("<command>", label).split("\n")) {
-			MessageUtils.sendInfo(sender, line);
+			chat.info(sender, line);
 		}
 		
 		return true;
