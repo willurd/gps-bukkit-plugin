@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.gps.GPSAction;
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
-import com.judoguys.bukkit.gps.configuration.GPSConfigurationType;
 import com.judoguys.bukkit.utils.MessageUtils;
 
 /**

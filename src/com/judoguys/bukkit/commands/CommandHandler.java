@@ -23,44 +23,31 @@ import java.util.Iterator;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 /**
- * Manages a group of actions that can handle Bukkit commands. Given
- * a CommandSender, Command, and arguments, it will find the appropriate
- * handler (Action) for that command.
- * 
- * @example Basic Usage
- *     CommandHandler timeHandler = new CommandHandler();
- *     timeHandler.addAction(new NowAction()); // will handle /time now
- *     timeHandler.addAction(new DayNightAction()); // will handle /time daynight
- *     
- *     public class Plugin extends JavaPlugin {
- *         @Override
- *         public boolean onCommand(CommandSender sender, Command cmd,
- *             String label, String[] args) {
- *             // Make sure the command is a /time command HERE.
- *             // Then pass off the command to timeHandler which will execute
- *             // the appropriate action, depending on the supplied arguments.
- *             timeHandler.handleCommand(sender, command, label, args);
- *         }
- *     }
+ * Manages a group of actions that can handle Bukkit commands. Given a
+ * CommandSender, Command, and arguments, it will find the appropriate handler
+ * (Action) for that command.
  */
 public class CommandHandler
 {
-	private JavaPlugin plugin;
+	private Plugin plugin;
 	private HashMap<String, Action> actions;
-	
-	public CommandHandler (JavaPlugin plugin)
+
+	public CommandHandler (Plugin plugin)
 	{
 		actions = new HashMap<String, Action>();
 	}
-	
+
+	public Plugin getPlugin ()
+	{
+		return plugin;
+	}
+
 	public boolean handleCommand (CommandSender sender, Command command,
 		String label, String[] args) throws InvalidCommandException
 	{
-		Iterator<Action> it = actions.values().iterator();
-		
 		for (Action action : getActions()) {
 			if (action.execute(sender, command, label, args)) {
 				// This action handled the command.
@@ -71,7 +58,7 @@ public class CommandHandler
 		// The command wasn't handled.
 		return false;
 	}
-	
+
 	public void addAction (Action action)
 	{
 		String name = action.getName();
@@ -82,31 +69,32 @@ public class CommandHandler
 		
 		actions.put(name, action);
 	}
-	
+
 	public void removeAction (String name)
 	{
 		if (!hasAction(name)) {
-			throw new Error("No action with the name '" + name + "' is registered");
+			throw new Error("No action with the name '" + name
+					+ "' is registered");
 		}
 		
 		actions.remove(name);
 	}
-	
+
 	public boolean hasAction (String name)
 	{
 		return actions.containsKey(name);
 	}
-	
+
 	public Action getAction (String name)
 	{
 		return actions.get(name);
 	}
-	
+
 	public Collection<Action> getActions ()
 	{
 		return actions.values();
 	}
-	
+
 	public String getUsage (CommandSender sender)
 	{
 		Collection<Action> actions = getActions();

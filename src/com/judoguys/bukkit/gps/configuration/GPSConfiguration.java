@@ -19,7 +19,6 @@ package com.judoguys.bukkit.gps.configuration;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
@@ -38,7 +37,9 @@ public class GPSConfiguration
 {
 	public static String CONFIG_FILE_EXTENSION = "yml";
 	
+	@SuppressWarnings("unused")
 	private Logger log;
+	
 	private GPS plugin;
 	private String playerName;
 	private Player player;

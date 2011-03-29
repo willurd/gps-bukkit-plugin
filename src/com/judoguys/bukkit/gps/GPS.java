@@ -17,7 +17,6 @@ package com.judoguys.bukkit.gps;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.judoguys.bukkit.commands.Action;
 import com.judoguys.bukkit.commands.CommandHandler;
 import com.judoguys.bukkit.commands.InvalidCommandException;
 import com.judoguys.bukkit.gps.actions.FindAction;
@@ -31,10 +30,7 @@ import com.judoguys.bukkit.utils.CommandUtils;
 import com.judoguys.bukkit.utils.MessageUtils;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;

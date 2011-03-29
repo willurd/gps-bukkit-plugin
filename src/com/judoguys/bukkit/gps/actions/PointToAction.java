@@ -19,7 +19,6 @@ package com.judoguys.bukkit.gps.actions;
 
 import java.lang.NumberFormatException;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

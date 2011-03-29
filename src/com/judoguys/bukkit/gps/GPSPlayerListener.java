@@ -18,12 +18,9 @@ package com.judoguys.bukkit.gps;
  */
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
-import com.judoguys.bukkit.gps.configuration.GPSConfigurationType;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -148,6 +145,14 @@ public class GPSPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerTeleport (PlayerMoveEvent event)
 	{
+		// Player player = event.getPlayer();
+		// Location from = event.getFrom();
+		// Location to = event.getTo();
+		// 
+		// log.info(getPlugin().getLabel() + " Player " + player.getName() + " (world=" +
+		// 	player.getWorld().toString() + ") teleported from " +
+		// 	from.toString() + " to " + to.toString());
+		
 		onPlayerMove(event); // They are handled the same.
 	}
 }
