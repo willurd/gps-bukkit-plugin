@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 
 import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.gps.GPS;
-import com.judoguys.gps.GPSAction;
 
 /**
  * /<command> reset

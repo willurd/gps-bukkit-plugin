@@ -2,7 +2,7 @@
 
 * Hook into the player leave/disconnect event (whatever it's called) to notify following players that that player is no longer online
 * Change all instances of "named location" to "waypoint"
-* Change "pointto" to "point"
+* Change "point" to "point"
 * Implement per-world, per-user settings
   * Example config:
       player: player1
@@ -37,7 +37,7 @@
 
 * find <player>
 * follow <player>
-* pointto x y z
+* point x y z
 * reset
 * hide
 * unhide
@@ -45,9 +45,9 @@
 ### To do
 
 * status
-* pointto x y z [<name>]
-* pointto waypoint <name>
-* pointto player <name>
+* point x y z [<name>]
+* point waypoint <name>
+* point player <name>
 * save x y z <name>
 * remove <name>
 * list

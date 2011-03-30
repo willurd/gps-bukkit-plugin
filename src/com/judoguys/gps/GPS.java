@@ -23,7 +23,7 @@ import com.judoguys.bukkit.commands.InvalidCommandException;
 import com.judoguys.bukkit.utils.CommandUtils;
 import com.judoguys.gps.actions.FindAction;
 import com.judoguys.gps.actions.FollowAction;
-import com.judoguys.gps.actions.PointToAction;
+import com.judoguys.gps.actions.PointAction;
 import com.judoguys.gps.actions.ResetAction;
 import com.judoguys.gps.actions.SetIsHiddenAction;
 import com.judoguys.gps.actions.UsageAction;
@@ -248,7 +248,7 @@ public class GPS extends JavaPlugin
 		commandHandler.addAction(new UsageAction(this));
 		commandHandler.addAction(new FindAction(this));
 		commandHandler.addAction(new FollowAction(this));
-		commandHandler.addAction(new PointToAction(this));
+		commandHandler.addAction(new PointAction(this));
 		commandHandler.addAction(new ResetAction(this));
 		commandHandler.addAction(new SetIsHiddenAction(this, "hide", true, "Prevents you from being located"));
 		commandHandler.addAction(new SetIsHiddenAction(this, "unhide", false, "Allows you to be located"));

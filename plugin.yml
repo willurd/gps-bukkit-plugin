@@ -2,7 +2,7 @@ name: GPS
 description: Use your compass to follow players and point to any location in your world
 version: 0.0.1
 author: willurd
-main: com.judoguys.bukkit.gps.GPS
+main: com.judoguys.gps.GPS
 commands:
   gps:
     description: Changes where your compass points
@@ -10,7 +10,7 @@ commands:
            Usage of /<command>:
            /<command> find <player> - Locates a player
            /<command> follow <player> - Follows a player as they move
-           /<command> pointto x y z - Points to a specific location
+           /<command> point x y z - Points to a specific location
            /<command> reset - Points to spawn
            /<command> hide - Prevents you from being located
            /<command> unhide - Allows you to be located
@@ -18,7 +18,7 @@ commands:
 
 # /<command> status - Tells you your current GPS settings
 
-# /<command> pointto <name> - Points to the name of a set of named coordinates
+# /<command> point <name> - Points to the name of a set of named coordinates
 # /<command> name x y z <name> - Names a set of corrdinates without pointing to them
 # /<command> remove <name> - Removes a set of named coordinates
 # /<command> list - Lists all named coordinates
