@@ -32,11 +32,19 @@ import org.bukkit.plugin.Plugin;
  */
 public class Chat
 {
+	// ======================================================================
+	// PUBLIC STATIC PROPERTIES
+	// ======================================================================
+	
 	public static ChatColor DEFAULT_INFO_COLOR = ChatColor.WHITE;
 	public static ChatColor DEFAULT_NOTIFICATION_COLOR = ChatColor.BLUE;
 	public static ChatColor DEFAULT_SUCCESS_COLOR = ChatColor.GREEN;
 	public static ChatColor DEFAULT_WARNING_COLOR = ChatColor.YELLOW;
 	public static ChatColor DEFAULT_ERROR_COLOR = ChatColor.RED;
+	
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
 	
 	private Plugin plugin;
 	
@@ -46,16 +54,28 @@ public class Chat
 	private ChatColor warningColor = DEFAULT_WARNING_COLOR;
 	private ChatColor errorColor = DEFAULT_ERROR_COLOR;
 	
+	// ======================================================================
+	// CONSTRUCTOR
+	// ======================================================================
+	
 	public Chat (Plugin plugin)
 	{
 		// Does nothing.
 		this.plugin = plugin;
 	}
 	
+	// ======================================================================
+	// GETTERS AND SETTERS
+	// ======================================================================
+	
+	// ~ plugin
+	
 	public Plugin getPlugin ()
 	{
 		return plugin;
 	}
+	
+	// ~ infoColor
 	
 	public ChatColor getInfoColor ()
 	{
@@ -67,6 +87,8 @@ public class Chat
 		infoColor = value;
 	}
 	
+	// ~ notificationColor
+	
 	public ChatColor getNotificationColor ()
 	{
 		return notificationColor;
@@ -76,6 +98,8 @@ public class Chat
 	{
 		notificationColor = value;
 	}
+	
+	// ~ successColor
 	
 	public ChatColor getSuccessColor ()
 	{
@@ -87,6 +111,8 @@ public class Chat
 		successColor = value;
 	}
 	
+	// ~ warningColor
+	
 	public ChatColor getWarningColor ()
 	{
 		return warningColor;
@@ -96,6 +122,8 @@ public class Chat
 	{
 		warningColor = value;
 	}
+	
+	// ~ errorColor
 	
 	public ChatColor getErrorColor ()
 	{
@@ -107,34 +135,108 @@ public class Chat
 		errorColor = value;
 	}
 	
+	// ======================================================================
+	// PRIVATE METHODS
+	// ======================================================================
+	
+	// ------------------------------
+	// Message Factory Methods
+	// ------------------------------
+	
+	private String makeInfoMessage (String message)
+	{
+		return getInfoColor() + message;
+	}
+	
+	private String makeNotifyMessage (String message)
+	{
+		return getNotificationColor() + message;
+	}
+	
+	private String makeSuccessMessage (String message)
+	{
+		return getSuccessColor() + message;
+	}
+	
+	private String makeWarningMessage (String message)
+	{
+		return getWarningColor() + message;
+	}
+	
+	private String makeErrorMessage (String message)
+	{
+		return getErrorColor() + message;
+	}
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	// ------------------------------
+	// Single Player Messaging
+	// ------------------------------
+	
 	public void message (CommandSender sender, String message)
 	{
-		// FIXME: sendLine or sendMessage?
 		sender.sendMessage(message);
 	}
 	
 	public void info (CommandSender sender, String message)
 	{
-		message(sender, getInfoColor() + message);
+		message(sender, makeInfoMessage(message));
 	}
 	
 	public void notify (CommandSender sender, String message)
 	{
-		message(sender, getNotificationColor() + message);
+		message(sender, makeNotifyMessage(message));
 	}
 	
 	public void success (CommandSender sender, String message)
 	{
-		message(sender, getSuccessColor() + message);
+		message(sender, makeSuccessMessage(message));
 	}
 	
 	public void warning (CommandSender sender, String message)
 	{
-		message(sender, getWarningColor() + message);
+		message(sender, makeWarningMessage(message));
 	}
 	
 	public void error (CommandSender sender, String message)
 	{
-		message(sender, getErrorColor() + message);
+		message(sender, makeErrorMessage(message));
+	}
+	
+	// ------------------------------
+	// Broadcasting
+	// ------------------------------
+	
+	public void broadcastMessage (String message)
+	{
+		plugin.getServer().broadcastMessage(message);
+	}
+	
+	public void broadcastInfo (String message)
+	{
+		broadcastMessage(makeInfoMessage(message));
+	}
+	
+	public void broadcastNotify (String message)
+	{
+		broadcastMessage(makeNotifyMessage(message));
+	}
+	
+	public void broadcastSuccess (String message)
+	{
+		broadcastMessage(makeSuccessMessage(message));
+	}
+	
+	public void broadcastWarning (String message)
+	{
+		broadcastMessage(makeWarningMessage(message));
+	}
+	
+	public void broadcastError (String message)
+	{
+		broadcastMessage(makeErrorMessage(message));
 	}
 }
