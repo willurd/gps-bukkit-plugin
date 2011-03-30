@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.actions;
+package com.judoguys.gps.actions;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -21,22 +21,34 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
+import com.judoguys.gps.config.GPSConfiguration;
 
 /**
- * /<command> reset
+ * /<command> hide
+ *   OR
+ * /<command> unhide
  * 
- * Points to spawn.
+ * Allows a player to hide and unhide themselves. When a player
+ * is hidden only ops will be able to locate them (and they will
+ * be able to location themselves).
  */
-public class UsageAction extends GPSAction
+public class SetIsHiddenAction extends GPSAction
 {
-	public static String HELP_ACTION_NAME = "help";
+	private boolean hidesPlayer;
 	
-	public UsageAction (GPS plugin)
+	public SetIsHiddenAction (GPS plugin, String name, boolean hidesPlayer,
+		String description)
 	{
-		super(plugin, "help", "/<command> [help]");
+		super(plugin, name, "/<command> " + name + " - " + description);
+		
+		this.hidesPlayer = hidesPlayer;
+	}
+	
+	public boolean getHidesPlayer ()
+	{
+		return hidesPlayer;
 	}
 	
 	@Override
@@ -47,45 +59,34 @@ public class UsageAction extends GPSAction
 			return false;
 		}
 		
-		Chat chat = getPlugin().getChat();
+		// Get the player that executed this command.
+		Player player = (Player)sender;
+		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		
-		String usage = command.getUsage();
-		
-		// The next couple of lines were unashamedly borrowed with
-		// very little modification from the Bukkit source.
-		for (String line : usage.replace("<command>", label).split("\n")) {
-			chat.info(sender, line);
+		// Is this player trying to hide or unhide themselves?
+		if (hidesPlayer) {
+			config.hide();
+		} else {
+			config.unhide();
 		}
 		
 		return true;
 	}
-
+	
 	@Override
 	public boolean handlesCommand (CommandSender sender, Command command,
 		String label, String[] args)
 	{
-		// NOTE: Don't use super.handlesCommand() because it'll return
-		//       false if there are no arguments, but this action is
-		//       special in that it specifically handles the case of
-		//       /<command> with no arguments.
+		if (!super.handlesCommand(sender, command, label, args)) {
+			// The first argument was not this action's name.
+			return false;
+		}
 		
 		if (!(sender instanceof Player)) {
 			// Only a player can use this command.
 			return false;
 		}
 		
-		// If there were no arguments to /<command>, this action will
-		// take care of it.
-		if (args.length == 0) {
-			return true;
-		}
-		
-		// Otherwise, check to see if there was one argument, and it
-		// matches HELP_ACTION_NAME.
-		if (args.length == 1) {
-			return args[0].equalsIgnoreCase(HELP_ACTION_NAME);
-		}
-		
-		return false;
+		return args.length == 1; // 'hide' or 'unhide'
 	}
 }

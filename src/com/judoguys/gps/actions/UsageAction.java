@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.actions;
+package com.judoguys.gps.actions;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -21,22 +21,24 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.bukkit.chat.Chat;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
 
 /**
  * /<command> reset
  * 
  * Points to spawn.
  */
-public class ResetAction extends GPSAction
+public class UsageAction extends GPSAction
 {
-	public ResetAction (GPS plugin)
+	public static String HELP_ACTION_NAME = "help";
+	
+	public UsageAction (GPS plugin)
 	{
-		super(plugin, "reset", "/<command> reset - Points to spawn");
+		super(plugin, "help", "/<command> [help]");
 	}
-
+	
 	@Override
 	public boolean execute (CommandSender sender, Command command,
 			String label, String[] args)
@@ -45,12 +47,15 @@ public class ResetAction extends GPSAction
 			return false;
 		}
 		
-		Player player = (Player)sender;
+		Chat chat = getPlugin().getChat();
 		
-//		getPlugin().log.info(getPlugin().getLabel() + " ResetAction: Getting config for player: " + player.getName());
+		String usage = command.getUsage();
 		
-		GPSConfiguration config = getPlugin().configurations.get(player.getName());
-		config.reset();
+		// The next couple of lines were unashamedly borrowed with
+		// very little modification from the Bukkit source.
+		for (String line : usage.replace("<command>", label).split("\n")) {
+			chat.info(sender, line);
+		}
 		
 		return true;
 	}
@@ -59,16 +64,28 @@ public class ResetAction extends GPSAction
 	public boolean handlesCommand (CommandSender sender, Command command,
 		String label, String[] args)
 	{
-		if (!super.handlesCommand(sender, command, label, args)) {
-			// The first argument was not this action's name.
-			return false;
-		}
+		// NOTE: Don't use super.handlesCommand() because it'll return
+		//       false if there are no arguments, but this action is
+		//       special in that it specifically handles the case of
+		//       /<command> with no arguments.
 		
 		if (!(sender instanceof Player)) {
 			// Only a player can use this command.
 			return false;
 		}
 		
-		return args.length == 1; // 'reset'
+		// If there were no arguments to /<command>, this action will
+		// take care of it.
+		if (args.length == 0) {
+			return true;
+		}
+		
+		// Otherwise, check to see if there was one argument, and it
+		// matches HELP_ACTION_NAME.
+		if (args.length == 1) {
+			return args[0].equalsIgnoreCase(HELP_ACTION_NAME);
+		}
+		
+		return false;
 	}
 }

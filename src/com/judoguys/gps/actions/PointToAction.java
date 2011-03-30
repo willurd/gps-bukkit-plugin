@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.actions;
+package com.judoguys.gps.actions;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -25,9 +25,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
+import com.judoguys.gps.config.GPSConfiguration;
 
 /**
  * /<command> pointto x y z

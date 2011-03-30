@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.actions;
+package com.judoguys.gps.actions;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -22,22 +22,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
+import com.judoguys.gps.config.GPSConfiguration;
 
 /**
- * /<command> find <player-name>`
+ * /<command> follow <player-name>
  * 
- * Points to the given players location when used.
+ * Follows a given player as they move.
  */
-public class FindAction extends GPSAction
+public class FollowAction extends GPSAction
 {
-	public FindAction (GPS plugin)
+	public FollowAction (GPS plugin)
 	{
-		super(plugin, "find", "/<command> find <player> - Locates a player");
+		super(plugin, "follow", "/<command> follow <player> - Follows a player as they move");
 	}
-	
+
 	@Override
 	public boolean execute (CommandSender sender, Command command,
 			String label, String[] args)
@@ -52,33 +52,46 @@ public class FindAction extends GPSAction
 		Player player = (Player)sender;
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		
-		// Get the player we'd like to find.
+		// Get the player we'd like to follow.
 		String playerName = args[1];
-		Player playerToFind = getPlugin().getServer().getPlayer(playerName);
+		Player playerToFollow = getPlugin().getServer().getPlayer(playerName);
 		
-		if (playerToFind == null) {
+		// Notify the player if they are already following this player.
+		if (config.isFollowing(playerToFollow)) {
+			chat.error(player, "You are already following " + playerName);
+			return true;
+		}
+		
+		// Check to make sure their logged in.
+		if (playerToFollow == null) {
 			chat.error(player, playerName + " is not logged in");
 			return true;
 		}
 		
-		// Make sure both players are in the same world.
-		if (player.getWorld() != playerToFind.getWorld()) {
-			chat.error(player, playerName + " is not in this world");
+		// Make sure the player isn't trying to follow themself.
+		if (player == playerToFollow) {
+			chat.error(player, "You can't follow yourself");
 			return true;
 		}
 		
 		// Make sure the player they are trying to follow isn't hidden.
-		if (!config.canLocate(playerToFind)) {
+		if (!config.canLocate(playerToFollow)) {
 			chat.error(player, "You are unable to find " + playerName);
 			return true;
 		}
 		
-		// Update the player's GPS configuration.
-		config.setExactLocation(playerToFind.getLocation());
+		// Make sure both players are in the same world.
+		if (player.getWorld() != playerToFollow.getWorld()) {
+			chat.error(player, playerName + " is not in this world");
+			return true;
+		}
+		
+		// Update this player's GPS configuration object.
+		config.follow(playerToFollow);
 		
 		return true;
 	}
-	
+
 	@Override
 	public boolean handlesCommand (CommandSender sender, Command command,
 		String label, String[] args)
@@ -87,12 +100,12 @@ public class FindAction extends GPSAction
 			// The first argument was not this action's name.
 			return false;
 		}
-		
+
 		if (!(sender instanceof Player)) {
 			// Only a player can use this command.
 			return false;
 		}
-		
-		return args.length == 2; // 'find', '<player-name>'
+
+		return args.length == 2; // 'follow', '<player-name>'
 	}
 }

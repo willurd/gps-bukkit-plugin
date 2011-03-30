@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps;
+package com.judoguys.gps.listeners;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -17,10 +17,11 @@ package com.judoguys.bukkit.gps;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.config.GPSConfiguration;
+
 import java.io.File;
 import java.util.logging.Logger;
-
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

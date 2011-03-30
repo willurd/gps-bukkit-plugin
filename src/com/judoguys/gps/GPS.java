@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps;
+package com.judoguys.gps;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -20,14 +20,15 @@ package com.judoguys.bukkit.gps;
 import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.commands.CommandHandler;
 import com.judoguys.bukkit.commands.InvalidCommandException;
-import com.judoguys.bukkit.gps.actions.FindAction;
-import com.judoguys.bukkit.gps.actions.FollowAction;
-import com.judoguys.bukkit.gps.actions.PointToAction;
-import com.judoguys.bukkit.gps.actions.ResetAction;
-import com.judoguys.bukkit.gps.actions.SetIsHiddenAction;
-import com.judoguys.bukkit.gps.actions.UsageAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
 import com.judoguys.bukkit.utils.CommandUtils;
+import com.judoguys.gps.actions.FindAction;
+import com.judoguys.gps.actions.FollowAction;
+import com.judoguys.gps.actions.PointToAction;
+import com.judoguys.gps.actions.ResetAction;
+import com.judoguys.gps.actions.SetIsHiddenAction;
+import com.judoguys.gps.actions.UsageAction;
+import com.judoguys.gps.config.GPSConfiguration;
+import com.judoguys.gps.listeners.GPSPlayerListener;
 
 import java.io.File;
 import java.util.HashMap;

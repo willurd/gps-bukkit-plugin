@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.actions;
+package com.judoguys.gps.actions;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -21,36 +21,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.judoguys.bukkit.gps.GPS;
-import com.judoguys.bukkit.gps.GPSAction;
-import com.judoguys.bukkit.gps.configuration.GPSConfiguration;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
+import com.judoguys.gps.config.GPSConfiguration;
 
 /**
- * /<command> hide
- *   OR
- * /<command> unhide
+ * /<command> reset
  * 
- * Allows a player to hide and unhide themselves. When a player
- * is hidden only ops will be able to locate them (and they will
- * be able to location themselves).
+ * Points to spawn.
  */
-public class SetIsHiddenAction extends GPSAction
+public class ResetAction extends GPSAction
 {
-	private boolean hidesPlayer;
-	
-	public SetIsHiddenAction (GPS plugin, String name, boolean hidesPlayer,
-		String description)
+	public ResetAction (GPS plugin)
 	{
-		super(plugin, name, "/<command> " + name + " - " + description);
-		
-		this.hidesPlayer = hidesPlayer;
+		super(plugin, "reset", "/<command> reset - Points to spawn");
 	}
-	
-	public boolean getHidesPlayer ()
-	{
-		return hidesPlayer;
-	}
-	
+
 	@Override
 	public boolean execute (CommandSender sender, Command command,
 			String label, String[] args)
@@ -59,20 +45,16 @@ public class SetIsHiddenAction extends GPSAction
 			return false;
 		}
 		
-		// Get the player that executed this command.
 		Player player = (Player)sender;
-		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		
-		// Is this player trying to hide or unhide themselves?
-		if (hidesPlayer) {
-			config.hide();
-		} else {
-			config.unhide();
-		}
+//		getPlugin().log.info(getPlugin().getLabel() + " ResetAction: Getting config for player: " + player.getName());
+		
+		GPSConfiguration config = getPlugin().configurations.get(player.getName());
+		config.reset();
 		
 		return true;
 	}
-	
+
 	@Override
 	public boolean handlesCommand (CommandSender sender, Command command,
 		String label, String[] args)
@@ -87,6 +69,6 @@ public class SetIsHiddenAction extends GPSAction
 			return false;
 		}
 		
-		return args.length == 1; // 'hide' or 'unhide'
+		return args.length == 1; // 'reset'
 	}
 }

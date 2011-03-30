@@ -1,4 +1,4 @@
-package com.judoguys.bukkit.gps.configuration;
+package com.judoguys.gps.config;
 
 /**
  * Copyright (C) 2011  William Bowers <http://williambowers.net/>
@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
 
 import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.bukkit.gps.GPS;
 import com.judoguys.bukkit.utils.LocationUtils;
+import com.judoguys.gps.GPS;
 
 /**
  * FIXME: This class needs some major cleanup.
