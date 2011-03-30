@@ -12,6 +12,7 @@
 * Consider removing the z coordinate from commands, as it doesn't actually do anything for the compass
 * Think about implementing permissions...maybe
   * Should I support it or wait until it's supported natively?
+  * Nice tutorial: http://forums.bukkit.org/threads/dont-be-ignorant-the-correct-way-to-hook.7813/
 
 ## Commands
 
