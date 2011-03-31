@@ -20,29 +20,85 @@ package com.judoguys.bukkit.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+/**
+ * A sub-command of a top-level command in bukkit.
+ * 
+ * Defined as the second keyword in a command string. If a player
+ * typed '/money give player1 100', 'money' would be the command,
+ * and 'give' would be the action. This class represents a single
+ * action, and can be placed in a collection of actions to make
+ * up a command.
+ */
 public abstract class Action
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
+	/**
+	 * This name of this action: /command <name> args...
+	 */
 	private String name;
+	
+	/**
+	 * An example (or multiple examples) of how to use this action.
+	 */
 	private String usage;
+	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
 	
 	public Action (String name, String usage)
 	{
-		this.name = name;
-		this.usage = usage;
+		setName(name);
+		setUsage(usage);
 	}
+	
+	// ======================================================================
+	// GETTERS AND SETTERS
+	// ======================================================================
+	
+	// ~ name
 	
 	public String getName ()
 	{
 		return name;
 	}
 	
+	public void setName (String value)
+	{
+		name = value;
+	}
+	
+	// ~ usage
+	
 	public String getUsage ()
 	{
 		return usage;
 	}
 	
+	public void setUsage (String value)
+	{
+		usage = value;
+	}
+	
+	// ======================================================================
+	// ABSTRACT METHODS
+	// ======================================================================
+	
+	/**
+	 * Asks this action to try and execute the given command. If this
+	 * action doesn't handle the particular command, return false, if it
+	 * does handle this command (whether it succeeds in executing it or
+	 * not), return true.
+	 */
 	public abstract boolean execute (CommandSender sender, Command command,
 		String label, String[] args);
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
 	
 	/**
 	 * Returns true if the given command is formatted correctly for

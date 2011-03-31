@@ -55,7 +55,7 @@ public class Chat
 	private ChatColor errorColor = DEFAULT_ERROR_COLOR;
 	
 	// ======================================================================
-	// CONSTRUCTOR
+	// CONSTRUCTORS
 	// ======================================================================
 	
 	public Chat (Plugin plugin)

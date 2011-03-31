@@ -32,19 +32,44 @@ import org.bukkit.plugin.Plugin;
  */
 public class CommandHandler
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
 	private Plugin plugin;
 	private HashMap<String, Action> actions;
-
+	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
+	
 	public CommandHandler (Plugin plugin)
 	{
 		actions = new HashMap<String, Action>();
 	}
-
+	
+	// ======================================================================
+	// GETTERS AND SETTERS
+	// ======================================================================
+	
+	// ~ plugin
+	
 	public Plugin getPlugin ()
 	{
 		return plugin;
 	}
-
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	/**
+	 * Tries to handle the given command using the registered actions.
+	 * 
+	 * @return true if the command was handled, false if it wasn't
+	 * @throws InvalidCommandException if the given command was recognized
+	 *         but improperly formatted
+	 */
 	public boolean handleCommand (CommandSender sender, Command command,
 		String label, String[] args) throws InvalidCommandException
 	{
@@ -58,7 +83,7 @@ public class CommandHandler
 		// The command wasn't handled.
 		return false;
 	}
-
+	
 	public void addAction (Action action)
 	{
 		String name = action.getName();
@@ -69,7 +94,7 @@ public class CommandHandler
 		
 		actions.put(name, action);
 	}
-
+	
 	public void removeAction (String name)
 	{
 		if (!hasAction(name)) {
@@ -79,27 +104,29 @@ public class CommandHandler
 		
 		actions.remove(name);
 	}
-
+	
 	public boolean hasAction (String name)
 	{
 		return actions.containsKey(name);
 	}
-
+	
 	public Action getAction (String name)
 	{
 		return actions.get(name);
 	}
-
+	
 	public Collection<Action> getActions ()
 	{
 		return actions.values();
 	}
-
+	
+	/**
+	 * Combines the usage strings of each registered action into one
+	 * usage string for the set.
+	 */
 	public String getUsage (CommandSender sender)
 	{
-		Collection<Action> actions = getActions();
-		Iterator<Action> it = actions.iterator();
-		
+		Iterator<Action> it = getActions().iterator();
 		StringBuilder builder = new StringBuilder();
 		
 		while (it.hasNext()) {
