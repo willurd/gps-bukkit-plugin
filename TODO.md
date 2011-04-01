@@ -1,71 +1,96 @@
 # TODO
 
-* Hook into the player leave/disconnect event (whatever it's called) to notify following players that that player is no longer online
-* Change all instances of "named location" to "waypoint"
-* Change "point" to "point"
-* Implement per-world, per-user settings
-  * Example config:
-      player: player1
-      default:
-        ishidden: false
-        type: FOLLOWING_PLAYER
-        followedplayer: player2
-      worlds:
-        world1:
-          ishidden: true
-          type: SPAWN
-        world2:
-          ishidden: false
-          type: FOLLOWING_PLAYER
-          followedplayer: player3
-  * Maybe:
-    * /gps setdefault - Makes your current world's settings the default settings
-    * /gps usedefault - Makes the default settings this world's settings
-* The player listener on-move event handler might need some performance improvements
-  * For example: having a HashMap from player to GPSConfiguration objects that are following them, instead of iterating over all configurations
-* Deal with followed players that are offline or in a different world:
-  * If the player comes back online or into the world let the user know and do business as usual
-* Update compasses when spawn changes
-* Make use of the default config file: <data-folder>/config.yml
-* Think about implementing permissions...maybe
-  * Should I support it or wait until it's supported natively?
-  * Nice tutorial: http://forums.bukkit.org/threads/dont-be-ignorant-the-correct-way-to-hook.7813/
-
 ## Commands
 
-### Finished
+* /gps status - what your GPS is currently pointed at (always display exact coordinates, even when following a player)
+* /gps point x y z <name> - points to the given location and saves it under <name>
+* /gps point waypoint/wp <name> - points to the given waypoint
+* /gps point player/p <name> - points to the given player's current location
+* /gps save x y z <name> - saves the given location under <name> without pointing to it
+* /gps remove <name>
+* /gps list [<page>] - shows your waypoints
+* /gps where <name> - location of <name>
+* /gps whereami - where you are now
+* /gps notifications - Toggle notifications (when someone points their GPS at you)
+  * Player1's GPS is now tracking you
+  * Player1's GPS is no longer tracking you
+  * Player1's GPS is pointed at your current location
+* /gps distance x y z - how far, in blocks, you are away from the given location
+* /gps distance waypoint/wp <name>
+* /gps distance player/p <name>
+* /gps give <player> <waypoint> - gives <player> <waypoint>
+* /gps pending [<page>] - lists all waypoints given by another player that are pending review
+* /gps accept <waypoint> - accepts a waypoint given by another player
+* /gps deny <waypoint> - denies a waypoint given by another player (removes it from your pending list)
 
-* find <player>
-* follow <player>
-* point x y z
-* reset
-* hide
-* unhide
+**Ideas**
 
-### To do
+* /gps announce - Announce to the whole world/server what your current GPS settings are ("player1's GPS is following player2")
 
-* status
-* point x y z [<name>]
-* point waypoint <name>
-* point player <name>
-* save x y z <name>
-* remove <name>
-* list
-* where - where your GPS is currently pointed
-* where <name> - location of <name>
-* whereami - where you are now
-* notify - Turn on notifications (when someone points their GPS at you)
-  - Player1's GPS is now tracking you
-  - Player1's GPS is no longer tracking you
-  - Player1's GPS is pointed at your current location
-* unnotify - Turn off notifications
-* distance x y z - how far, in blocks, you are away from the given location
-* distance waypoint <name>
-* distance player <name>
-* give <player> <waypoint> - gives <player> <waypoint>
-* pending - lists all waypoints given by another player that are pending review
-* accept <waypoint> - accepts a waypoint given by another player
-* deny <waypoint> - denies a waypoint given by another player (removes it from your pending list)
+## Notifications
+
+**For players following another player**
+
+* Notify when that player goes offline (need to find the 'player leave/disconnect' event)
+* Notify when that player switches worlds (does there need to be a 'world change' event for Players?)
+* Notify when that player hides themselves (`/gps hide`)
+* Notify when that player comes back into your world from another world
+* Notify when that player comes back online
+
+**For players being followed by another player**
+
+* Notify when they start being followed
+* Notify when they stop being followed
+
+## Naming/Terms
+
+* "Named Location" becomes "Waypoint"
+
+## [maybe] Per-World Settings
+
+Track a different set of settings for each user for each world.
+
+**Maybe**
+
+* /gps setdefault - Makes your current world's settings the default settings
+* /gps usedefault - Makes the default settings this world's settings
+
+## SPAWN_CHANGE Event
+
+* Update compasses, that are configured to point to spawn, with the new location when spawn changes
+
+This requires the following pull requests to be accepted:
+
+* Bukkit: https://github.com/Bukkit/Bukkit/pull/175
+* CraftBukkit: https://github.com/Bukkit/CraftBukkit/pull/218
+
+## Plugin Config
+
+* The default config file exists at: <data-folder>/config.yml
+
+## Permissions
+
+* 'gps' - enables everything
+* 'gps.follow' - enables following another player
+* 'gps.point' - enables pointing to another location
+* 'gps.point.location' - fine-grained support for pointing to an exact location
+* 'gps.point.player' - fine-grained support for pointing to another player's current location
+* 'gps.waypoints' - enables everything having to do with waypoints
+* 'gps.waypoints.save' - enables saving waypoints
+* 'gps.waypoints.remove' - enables removing waypoints
+* 'gps.waypoints.list' - enables listing your waypoints
+* 'gps.waypoints.use' - enables using a waypoint (saved-location)
+* 'gps.waypoints.give' - enables giving waypoints to other players
+* 'gps.waypoints.receive' - enables receiving waypoints from other players
+* 'gps.command.where' - enables using the 'where' command (finding out what a waypoint's exact location is)
+* 'gps.command.whereami' - enables using the 'whereami' command
+
+And more.
+
+## Check Overall Plugin Performance
+
+* The player listener on-move event handler might need some performance improvements
+  * For example: having a HashMap from player to GPSConfiguration objects that are following them, instead of iterating over all configurations
 
 ## Far Off Plans
 

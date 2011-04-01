@@ -1,0 +1,20 @@
+# The player this config belongs to.
+player: player1
+
+# The default configuration, for new worlds.
+default:
+  ishidden: false
+  type: FOLLOWING_PLAYER
+  followedplayer: player2
+
+# Per-world configurations.
+worlds:
+  # World 'world1'
+  world1:
+    ishidden: true
+    type: SPAWN
+  # World 'world1'
+  world2:
+    ishidden: false
+    type: FOLLOWING_PLAYER
+    followedplayer: player3
