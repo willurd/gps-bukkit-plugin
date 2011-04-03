@@ -4,17 +4,17 @@ import com.judoguys.bukkit.permissions.adapters.DefaultAdapter;
 
 import org.bukkit.command.CommandSender;
 
-public class PermissionHandler
+public class PermissionManager
 {
 	private PermissionAdapter defaultAdapter = new DefaultAdapter(this);
 	private PermissionAdapter adapter;
 	
-	public PermissionHandler ()
+	public PermissionManager ()
 	{
 		// Does nothing.
 	}
 	
-	public PermissionHandler (PermissionAdapter adapter)
+	public PermissionManager (PermissionAdapter adapter)
 	{
 		setAdapter(adapter);
 	}

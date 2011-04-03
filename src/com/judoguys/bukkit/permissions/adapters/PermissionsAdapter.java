@@ -2,7 +2,7 @@ package com.judoguys.bukkit.permissions.adapters;
 
 import com.judoguys.bukkit.permissions.Permission;
 import com.judoguys.bukkit.permissions.PermissionAdapter;
-import com.judoguys.bukkit.permissions.PermissionHandler;
+import com.judoguys.bukkit.permissions.PermissionManager;
 
 import org.bukkit.command.CommandSender;
 
@@ -12,9 +12,9 @@ import org.bukkit.command.CommandSender;
  */
 public class PermissionsAdapter extends PermissionAdapter
 {
-	public PermissionsAdapter (PermissionHandler handler)
+	public PermissionsAdapter (PermissionManager manager)
 	{
-		
+		super(manager);
 	}
 	
 	public void reloadPermissions ()

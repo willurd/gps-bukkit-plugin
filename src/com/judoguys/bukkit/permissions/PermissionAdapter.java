@@ -4,21 +4,21 @@ import org.bukkit.command.CommandSender;
 
 public abstract class PermissionAdapter
 {
-	private PermissionHandler handler;
+	private PermissionManager manager;
 	
 	public PermissionAdapter ()
 	{
 		// Does nothing.
 	}
 	
-	public PermissionAdapter (PermissionHandler handler)
+	public PermissionAdapter (PermissionManager manager)
 	{
-		this.handler = handler;
+		this.manager = manager;
 	}
 	
-	public PermissionHandler getHandler ()
+	public PermissionManager getManager ()
 	{
-		return handler;
+		return manager;
 	}
 	
 	public abstract void reloadPermissions ();
