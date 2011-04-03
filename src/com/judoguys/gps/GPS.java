@@ -20,6 +20,7 @@ package com.judoguys.gps;
 import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.commands.CommandHandler;
 import com.judoguys.bukkit.commands.InvalidCommandException;
+import com.judoguys.bukkit.permissions.PermissionManager;
 import com.judoguys.bukkit.utils.CommandUtils;
 import com.judoguys.gps.actions.FindAction;
 import com.judoguys.gps.actions.FollowAction;
@@ -79,14 +80,15 @@ public class GPS extends JavaPlugin
 	// PUBLIC PROPERTIES
 	// ======================================================================
 	
-	public Logger log;
-	public PluginManager pm;
 	public HashMap<String, GPSConfiguration> configurations;
 	
 	// ======================================================================
 	// PRIVATE PROPERTIES
 	// ======================================================================
 	
+	private Logger logger;
+	private PluginManager pluginManager;
+	private PermissionManager permissionManager;
 	private Chat chat;
 	private CommandHandler commandHandler;
 	private GPSPlayerListener playerListener;
@@ -107,6 +109,27 @@ public class GPS extends JavaPlugin
 	// ======================================================================
 	// ACCESSORS
 	// ======================================================================
+	
+	// ~ logger
+	
+	public Logger getLogger ()
+	{
+		return logger;
+	}
+	
+	// ~ pluginManager
+	
+	public PluginManager getPluginManager ()
+	{
+		return pluginManager;
+	}
+	
+	// ~ permissionManager
+	
+	public PermissionManager getPermissionManager ()
+	{
+		return permissionManager;
+	}
 	
 	// ~ chat
 	
@@ -146,29 +169,44 @@ public class GPS extends JavaPlugin
 	 */
 	public void onEnable ()
 	{
-		log = getServer().getLogger();
+		// Setup the logger.
+		logger = getServer().getLogger();
 		
+		// Setup the GPS configurations.
 		configurations = new HashMap<String, GPSConfiguration>();
 		
+		// Setup the plugin information for logging.
 		desc = getDescription();
 		version = desc.getVersion();
 		label = "[" + desc.getName() + "]";
-		log.info(getLabel() + " version " + version + " by willurd");
+		logger.info(getLabel() + " version " + version + " by willurd");
 		
-		pm = getServer().getPluginManager();
-		playerListener = new GPSPlayerListener(this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
-		
+		// Setup the data folders.
 		File dataFolder = getDataFolder();
 		playersFolder = new File(dataFolder.getAbsolutePath() + "/players/");
 		
+		// Setup the plugin manager.
+		pluginManager = getServer().getPluginManager();
+		
+		// Setup the permission manager.
+		permissionManager = new PermissionManager();
+		
+		// Setup the player listener.
+		playerListener = new GPSPlayerListener(this);
+		pluginManager.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
+		pluginManager.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+		pluginManager.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
+		
+		// Load the plugin settings.
 		loadSettings();
+		
+		// Setup permissions.
 		setupPermissions();
+		
+		// Setup the chat commands/actions.
 		setupCommands();
 		
-		log.info(getLabel() + " enabled!");
+		logger.info(getLabel() + " Plugin Enabled.");
 	}
 	
 	/**
@@ -180,7 +218,7 @@ public class GPS extends JavaPlugin
 	{
 		// TODO: What should be done here?.
 		
-		log.info(getLabel() + " disabled");
+		logger.info(getLabel() + " Plugin Disabled.");
 	}
 	
 	/**
@@ -218,22 +256,6 @@ public class GPS extends JavaPlugin
 	}
 	
 	// ======================================================================
-	// PUBLIC METHODS
-	// ======================================================================
-	
-	/**
-	 * Returns whether the give player has the given permission.
-	 * 
-	 * FIXME: See if this can be generalized to CommandSender.
-	 */
-	public boolean hasPermission (Player player, String permission)
-	{
-		// Permissions haven't been implemented; just return true
-		// for now.
-		return true;
-	}
-	
-	// ======================================================================
 	// PRIVATE METHODS
 	// ======================================================================
 	
@@ -258,7 +280,7 @@ public class GPS extends JavaPlugin
 		File dataFolder = getDataFolder();
 		
 		if (!dataFolder.exists()) {
-			log.info(getLabel() + " Data folder does not exist. Creating it now.");
+			logger.info(getLabel() + " Data folder does not exist. Creating it now.");
 			dataFolder.mkdir();
 		}
 		
@@ -266,7 +288,7 @@ public class GPS extends JavaPlugin
 		File playersFolder = getPlayersFolder();
 		
 		if (!playersFolder.exists()) {
-			log.info(getLabel() + " Players folder does not exist. Creating it now.");
+			logger.info(getLabel() + " Players folder does not exist. Creating it now.");
 			playersFolder.mkdir();
 		}
 	}

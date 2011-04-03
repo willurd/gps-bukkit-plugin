@@ -59,30 +59,7 @@ public class CommandHandler
 		return plugin;
 	}
 	
-	// ======================================================================
-	// PUBLIC METHODS
-	// ======================================================================
-	
-	/**
-	 * Tries to handle the given command using the registered actions.
-	 * 
-	 * @return true if the command was handled, false if it wasn't
-	 * @throws InvalidCommandException if the given command was recognized
-	 *         but improperly formatted
-	 */
-	public boolean handleCommand (CommandSender sender, Command command,
-		String label, String[] args) throws InvalidCommandException
-	{
-		for (Action action : getActions()) {
-			if (action.execute(sender, command, label, args)) {
-				// This action handled the command.
-				return true;
-			}
-		}
-		
-		// The command wasn't handled.
-		return false;
-	}
+	// ~ actions
 	
 	public void addAction (Action action)
 	{
@@ -118,6 +95,31 @@ public class CommandHandler
 	public Collection<Action> getActions ()
 	{
 		return actions.values();
+	}
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	/**
+	 * Tries to handle the given command using the registered actions.
+	 * 
+	 * @return true if the command was handled, false if it wasn't
+	 * @throws InvalidCommandException if the given command was recognized
+	 *         but improperly formatted
+	 */
+	public boolean handleCommand (CommandSender sender, Command command,
+		String label, String[] args) throws InvalidCommandException
+	{
+		for (Action action : getActions()) {
+			if (action.execute(sender, command, label, args)) {
+				// This action handled the command.
+				return true;
+			}
+		}
+		
+		// The command wasn't handled.
+		return false;
 	}
 	
 	/**
