@@ -69,11 +69,23 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class GPS extends JavaPlugin
 {
+	// ======================================================================
+	// PUBLIC STATIC PROPERTIES
+	// ======================================================================
+	
 	public static String COMMAND_NAME = "gps";
+	
+	// ======================================================================
+	// PUBLIC PROPERTIES
+	// ======================================================================
 	
 	public Logger log;
 	public PluginManager pm;
 	public HashMap<String, GPSConfiguration> configurations;
+	
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
 	
 	private Chat chat;
 	private CommandHandler commandHandler;
@@ -83,15 +95,27 @@ public class GPS extends JavaPlugin
 	private String version;
 	private String label;
 	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
+	
 	public GPS ()
 	{
 		chat = new Chat(this);
 	}
 	
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ chat
+	
 	public Chat getChat ()
 	{
 		return chat;
 	}
+	
+	// ~ label
 	
 	/**
 	 * Returns a string that identifies this plugin, mostly used
@@ -102,6 +126,8 @@ public class GPS extends JavaPlugin
 		return label;
 	}
 	
+	// ~ playersFolder
+	
 	/**
 	 * Returns the players folder, where all of the player-specific
 	 * GPS information is stored.
@@ -110,6 +136,10 @@ public class GPS extends JavaPlugin
 	{
 		return playersFolder;
 	}
+	
+	// ======================================================================
+	// Plugin INTERFACE
+	// ======================================================================
 	
 	/**
 	 * Called when the plugin is enabled.
@@ -186,6 +216,26 @@ public class GPS extends JavaPlugin
 		
 		return super.onCommand(sender, cmd, label, args);
 	}
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	/**
+	 * Returns whether the give player has the given permission.
+	 * 
+	 * FIXME: See if this can be generalized to CommandSender.
+	 */
+	public boolean hasPermission (Player player, String permission)
+	{
+		// Permissions haven't been implemented; just return true
+		// for now.
+		return true;
+	}
+	
+	// ======================================================================
+	// PRIVATE METHODS
+	// ======================================================================
 	
 	/**
 	 * Load in the settings files, which make gps settings persistent

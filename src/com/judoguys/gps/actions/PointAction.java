@@ -17,16 +17,17 @@ package com.judoguys.gps.actions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.chat.Chat;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.config.GPSConfiguration;
+import com.judoguys.gps.permissions.GPSPermissions;
+
 import java.lang.NumberFormatException;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.gps.GPS;
-import com.judoguys.gps.config.GPSConfiguration;
 
 /**
  * /<command> point x y z
@@ -41,6 +42,12 @@ public class PointAction extends GPSAction
 	public PointAction (GPS plugin)
 	{
 		super(plugin, "point", "/<command> point x y z - Points to a specific location");
+		
+		// The GPS super permission.
+		addSuperPermission(GPSPermissions.SUPER_PERMISSION);
+		
+		// Required permissions.
+		addRequiredPermission(GPSPermissions.POINT_ACTION);
 	}
 
 	@Override

@@ -46,9 +46,17 @@ public class GPSPlayerListener extends PlayerListener
 		return plugin;
 	}
 	
+	/**
+	 * FIXME: Change to PlayerJoinEvent after moving to a newer bukkit
+	 *        API that has it.
+	 */
 	@Override
 	public void onPlayerJoin (PlayerEvent event)
 	{
+		// if (event.isCancelled()) {
+		// 	return;
+		// }
+		
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 		
@@ -114,10 +122,9 @@ public class GPSPlayerListener extends PlayerListener
 	@Override
 	public void onPlayerMove (PlayerMoveEvent event)
 	{
-		// FIXME: Should this return if the event is canceled?
-//		if (event.isCancelled()) {
-//			return;
-//		}
+		if (event.isCancelled()) {
+			return;
+		}
 		
 		Player movedPlayer = event.getPlayer();
 		Location location = movedPlayer.getLocation();

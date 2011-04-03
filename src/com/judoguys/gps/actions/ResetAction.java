@@ -17,12 +17,13 @@ package com.judoguys.gps.actions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.config.GPSConfiguration;
+import com.judoguys.gps.permissions.GPSPermissions;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.judoguys.gps.GPS;
-import com.judoguys.gps.config.GPSConfiguration;
 
 /**
  * /<command> reset
@@ -34,6 +35,12 @@ public class ResetAction extends GPSAction
 	public ResetAction (GPS plugin)
 	{
 		super(plugin, "reset", "/<command> reset - Points to spawn");
+		
+		// The GPS super permission.
+		addSuperPermission(GPSPermissions.SUPER_PERMISSION);
+		
+		// Required permissions.
+		addRequiredPermission(GPSPermissions.RESET_ACTION);
 	}
 
 	@Override

@@ -17,13 +17,14 @@ package com.judoguys.gps.actions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.gps.GPS;
 import com.judoguys.gps.config.GPSConfiguration;
+import com.judoguys.gps.permissions.GPSPermissions;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * /<command> follow <player-name>
@@ -35,6 +36,12 @@ public class FollowAction extends GPSAction
 	public FollowAction (GPS plugin)
 	{
 		super(plugin, "follow", "/<command> follow <player> - Follows a player as they move");
+		
+		// The GPS super permission.
+		addSuperPermission(GPSPermissions.SUPER_PERMISSION);
+		
+		// Required permissions.
+		addRequiredPermission(GPSPermissions.FOLLOW_ACTION);
 	}
 
 	@Override

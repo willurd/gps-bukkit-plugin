@@ -17,12 +17,13 @@ package com.judoguys.gps.actions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.chat.Chat;
+import com.judoguys.gps.GPS;
+import com.judoguys.gps.permissions.GPSPermissions;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.gps.GPS;
 
 /**
  * /<command> reset
@@ -36,6 +37,12 @@ public class UsageAction extends GPSAction
 	public UsageAction (GPS plugin)
 	{
 		super(plugin, "help", "/<command> [help]");
+		
+		// The GPS super permission.
+		addSuperPermission(GPSPermissions.SUPER_PERMISSION);
+		
+		// Required permissions.
+		addRequiredPermission(GPSPermissions.HELP_ACTION);
 	}
 	
 	@Override
