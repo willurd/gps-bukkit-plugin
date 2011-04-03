@@ -18,6 +18,7 @@ package com.judoguys.gps.actions;
  */
 
 import com.judoguys.gps.GPS;
+import com.judoguys.gps.GPSAction;
 import com.judoguys.gps.config.GPSConfiguration;
 import com.judoguys.gps.permissions.GPSPermissions;
 
