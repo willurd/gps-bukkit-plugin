@@ -38,7 +38,7 @@ public class GPSConfiguration
 	public static String CONFIG_FILE_EXTENSION = "yml";
 	
 	@SuppressWarnings("unused")
-	private Logger log;
+	private Logger logger;
 	
 	private GPS plugin;
 	private String playerName;
@@ -61,7 +61,7 @@ public class GPSConfiguration
 	public GPSConfiguration (GPS plugin)
 	{
 		this.plugin = plugin;
-		log = plugin.log;
+		logger = plugin.getLogger();
 		
 		namedLocations = new HashMap<String, Location>();
 	}
@@ -97,7 +97,7 @@ public class GPSConfiguration
 		Player player = server.getPlayer(playerName);
 		
 		if (player == null) {
-			plugin.log.info(plugin.getLabel() + " Tried to load configuration for player that isn't logged in: " + playerName);
+			plugin.getLogger().info(plugin.getLabel() + " Tried to load configuration for player that isn't logged in: " + playerName);
 			return null;
 		}
 		

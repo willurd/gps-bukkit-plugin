@@ -31,14 +31,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class GPSPlayerListener extends PlayerListener
 {
-	private Logger log;
+	private Logger logger;
 	
 	private GPS plugin;
 	
 	public GPSPlayerListener (GPS plugin)
 	{
 		this.plugin = plugin;
-		log = plugin.log;
+		logger = plugin.getLogger();
 	}
 	
 	public GPS getPlugin ()
@@ -89,26 +89,26 @@ public class GPSPlayerListener extends PlayerListener
 		
 		// There is no config object for this player -- see if there's a
 		// config file to load for them.
-		log.info(getPlugin().getLabel() + " Searching for " + playerName + "'s config file");
+		logger.info(getPlugin().getLabel() + " Searching for " + playerName + "'s config file");
 		
 		File configFile = GPSConfiguration.configFileFor(playerName, getPlugin());
 		
 		if (configFile.exists()) {
-			log.info(getPlugin().getLabel() + " Config file found");
+			logger.info(getPlugin().getLabel() + " Config file found");
 			// The config file exists -- try to load it.
 			try {
 				config = GPSConfiguration.readFrom(configFile, getPlugin());
 				getPlugin().configurations.put(playerName, config);
 				return;
 			} catch (Exception e) {
-				log.info(getPlugin().getLabel() + " Error loading config file for " + playerName + ": " + e.getMessage());
+				logger.info(getPlugin().getLabel() + " Error loading config file for " + playerName + ": " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		
 		// Either the config file doesn't exist or there was an error reading
 		// it (possibly it was formatted improperly?).
-		log.info(getPlugin().getLabel() + " Creating default config for " + playerName);
+		logger.info(getPlugin().getLabel() + " Creating default config for " + playerName);
 		
 		config = new GPSConfiguration(plugin);
 		config.setPlayer(player);
@@ -157,7 +157,7 @@ public class GPSPlayerListener extends PlayerListener
 		// Location from = event.getFrom();
 		// Location to = event.getTo();
 		// 
-		// log.info(getPlugin().getLabel() + " Player " + player.getName() + " (world=" +
+		// logger.info(getPlugin().getLabel() + " Player " + player.getName() + " (world=" +
 		// 	player.getWorld().toString() + ") teleported from " +
 		// 	from.toString() + " to " + to.toString());
 		

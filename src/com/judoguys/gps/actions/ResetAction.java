@@ -54,7 +54,7 @@ public class ResetAction extends GPSAction
 		
 		Player player = (Player)sender;
 		
-//		getPlugin().log.info(getPlugin().getLabel() + " ResetAction: Getting config for player: " + player.getName());
+//		getPlugin().getLogger().info(getPlugin().getLabel() + " ResetAction: Getting config for player: " + player.getName());
 		
 		GPSConfiguration config = getPlugin().configurations.get(player.getName());
 		config.reset();
