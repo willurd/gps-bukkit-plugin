@@ -33,6 +33,11 @@
     * GPSConfiguration.getConfigsFollowing(playerObject) -> List<GPSConfiguration>
     * GPSConfiguration.getConfigsFollowing("playerName") -> List<GPSConfiguration>
     * etc
+* Renamed GPSPermissions to GPSPermission
+* Comment each property on GPSPermission
+  * What does it allow?
+  * Does it cover multiple commands/actions?
+  * etc
 
 **Ideas**
 
