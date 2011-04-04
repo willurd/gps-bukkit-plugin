@@ -25,6 +25,8 @@ public class FontWidthCalculator
 {
 	/**
 	 * The original value was 325, but I've found this value to work better.
+	 * 
+	 * TODO: Make sure this is the most accurate value.
 	 */
 	public static int MAX_LINE_WIDTH = 350;
 	
