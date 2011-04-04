@@ -221,7 +221,8 @@ public class Chat
 	
 	private String makeHeadingMessage (String heading)
 	{
-		return getHeadingPrefix() + getHeadingColor() + heading + getHeadingSuffix();
+		String message = getHeadingPrefix() + getHeadingColor() + heading + getHeadingSuffix();
+		return FontWidthCalculator.truncate(message);
 	}
 	
 	// ======================================================================
@@ -234,15 +235,6 @@ public class Chat
 	
 	public void message (CommandSender sender, String message)
 	{
-		message(sender, message, false);
-	}
-	
-	public void message (CommandSender sender, String message, boolean singleLine)
-	{
-		if (singleLine) {
-			message = FontWidthCalculator.truncate(message);
-		}
-		
 		sender.sendMessage(message);
 	}
 	
@@ -273,7 +265,7 @@ public class Chat
 	
 	public void heading (CommandSender sender, String heading)
 	{
-		message(sender, makeHeadingMessage(heading), true);
+		message(sender, makeHeadingMessage(heading));
 	}
 	
 	// ------------------------------
