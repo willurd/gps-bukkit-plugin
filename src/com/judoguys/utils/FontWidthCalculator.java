@@ -1,10 +1,10 @@
 // NOTICE!!!: I originally got this class from https://github.com/tkelly910/Help/blob/master/src/main/java/org/angelsl/minecraft/randomshit/fontwidth/MinecraftFontWidthCalculator.java
 // 
 // I modified this class and, as per the license below, changed the name. The license
-// has been left in tact from the original file. THIS IS LICENSE SEPARATELY FROM
+// has been left in tact from the original file. THIS IS LICENSED SEPARATELY FROM
 // THE REST OF THIS PROJECT.
 // 
-// Thanks to Sam Hocevar, who originally wrote this class!!!
+// Thanks to Sam Hocevar, who originally wrote this class!
 
 package com.judoguys.bukkit.utils;
 
