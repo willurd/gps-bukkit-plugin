@@ -240,10 +240,10 @@ public class Chat
 	public void message (CommandSender sender, String message, boolean singleLine)
 	{
 		if (singleLine) {
-			sender.sendMessage(FontWidthCalculator.truncate(message));
-		} else {
-			sender.sendMessage(message);
+			message = FontWidthCalculator.truncate(message);
 		}
+		
+		sender.sendMessage(message);
 	}
 	
 	public void info (CommandSender sender, String message)
