@@ -23,21 +23,29 @@
 * /gps accept <waypoint> - accepts a waypoint given by another player
 * /gps deny <waypoint> - denies a waypoint given by another player (removes it from your pending list)
 
+**Versions**
+
+* Update to 1.4
+
 **Misc**
 
-* Renamed `/gps reset` to `/gps spawn` and update all corresponding code (like GPSConfiguration.reset())
+* Rename `/gps reset` to `/gps spawn` and update all corresponding code (like GPSConfiguration.reset())
 * Cleanup and document GPSConfiguration
-  * Maybe see about adding some utility methods to the class as well, like:
-    * GPSConfiguration.getConfig(playerObject) -> GPSConfiguration
-    * GPSConfiguration.getConfig("playerName") -> GPSConfiguration
-    * GPSConfiguration.getConfigsFollowing(playerObject) -> List<GPSConfiguration>
-    * GPSConfiguration.getConfigsFollowing("playerName") -> List<GPSConfiguration>
-    * etc
+* Add a GPSConfigurationSet class to replace `HashMap<String, GPSConfiguration> configurations` in GPS
+  * getConfig(playerObject) -> GPSConfiguration
+  * getConfig("playerName") -> GPSConfiguration
+  * getConfigsFollowing(playerObject) -> List<GPSConfiguration>
+  * getConfigsFollowing("playerName") -> List<GPSConfiguration>
+  * etc
+* When a player logs off, remove their config from the set
 * Renamed GPSPermissions to GPSPermission
 * Comment each property on GPSPermission
   * What does it allow?
   * Does it cover multiple commands/actions?
   * etc
+* Implement configuration saving
+  * Saving on every command that updates the config shouldn't be too taxing; they are small files
+* Consider removing the last known location for FOLLOWING_PLAYER type configs
 
 **Ideas**
 
