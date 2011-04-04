@@ -23,6 +23,17 @@
 * /gps accept <waypoint> - accepts a waypoint given by another player
 * /gps deny <waypoint> - denies a waypoint given by another player (removes it from your pending list)
 
+**Misc**
+
+* Renamed `/gps reset` to `/gps spawn` and update all corresponding code (like GPSConfiguration.reset())
+* Cleanup and document GPSConfiguration
+  * Maybe see about adding some utility methods to the class as well, like:
+    * GPSConfiguration.getConfig(playerObject) -> GPSConfiguration
+    * GPSConfiguration.getConfig("playerName") -> GPSConfiguration
+    * GPSConfiguration.getConfigsFollowing(playerObject) -> List<GPSConfiguration>
+    * GPSConfiguration.getConfigsFollowing("playerName") -> List<GPSConfiguration>
+    * etc
+
 **Ideas**
 
 * /gps announce - Announce to the whole world/server what your current GPS settings are ("player1's GPS is following player2")
