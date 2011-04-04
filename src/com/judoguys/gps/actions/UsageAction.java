@@ -55,6 +55,10 @@ public class UsageAction extends GPSAction
 		}
 		
 		Chat chat = getPlugin().getChat();
+		chat.heading(sender, "GPS Usage");
+		
+		// TODO: Update this action to use the command handler and display
+		//       actions according to the sender's permissions, etc.
 		
 		String usage = command.getUsage();
 		

@@ -17,7 +17,10 @@ package com.judoguys.bukkit.chat;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.utils.FontWidthCalculator;
+
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -41,6 +44,14 @@ public class Chat
 	public static ChatColor DEFAULT_SUCCESS_COLOR = ChatColor.GREEN;
 	public static ChatColor DEFAULT_WARNING_COLOR = ChatColor.YELLOW;
 	public static ChatColor DEFAULT_ERROR_COLOR = ChatColor.RED;
+	public static ChatColor DEFAULT_HEADING_COLOR = ChatColor.AQUA;
+	
+	public static String DEFAULT_HEADING_PREFIX =
+		ChatColor.GOLD + "----" + ChatColor.GRAY + "[" + ChatColor.WHITE + " ";
+	
+	public static String DEFAULT_HEADING_SUFFIX =
+		" " + ChatColor.GRAY + "]" + ChatColor.GOLD +
+		"---------------------------------------------";
 	
 	// ======================================================================
 	// PRIVATE PROPERTIES
@@ -53,6 +64,10 @@ public class Chat
 	private ChatColor successColor = DEFAULT_SUCCESS_COLOR;
 	private ChatColor warningColor = DEFAULT_WARNING_COLOR;
 	private ChatColor errorColor = DEFAULT_ERROR_COLOR;
+	private ChatColor headingColor = DEFAULT_HEADING_COLOR;
+	
+	private String headingPrefix = DEFAULT_HEADING_PREFIX;
+	private String headingSuffix = DEFAULT_HEADING_SUFFIX;
 	
 	// ======================================================================
 	// CONSTRUCTORS
@@ -135,6 +150,42 @@ public class Chat
 		errorColor = value;
 	}
 	
+	// ~ headingColor
+	
+	public ChatColor getHeadingColor ()
+	{
+		return headingColor;
+	}
+	
+	public void setHeadingColor (ChatColor value)
+	{
+		headingColor = value;
+	}
+	
+	// ~ headingPrefix
+	
+	public String getHeadingPrefix ()
+	{
+		return headingPrefix;
+	}
+	
+	public void setHeadingPrefix (String value)
+	{
+		headingPrefix = value;
+	}
+	
+	// ~ headingSuffix
+	
+	public String getHeadingSuffix ()
+	{
+		return headingSuffix;
+	}
+	
+	public void setHeadingSuffix (String value)
+	{
+		headingSuffix = value;
+	}
+	
 	// ======================================================================
 	// PRIVATE METHODS
 	// ======================================================================
@@ -168,6 +219,11 @@ public class Chat
 		return getErrorColor() + message;
 	}
 	
+	private String makeHeadingMessage (String heading)
+	{
+		return getHeadingPrefix() + getHeadingColor() + heading + getHeadingSuffix();
+	}
+	
 	// ======================================================================
 	// PUBLIC METHODS
 	// ======================================================================
@@ -178,7 +234,16 @@ public class Chat
 	
 	public void message (CommandSender sender, String message)
 	{
-		sender.sendMessage(message);
+		message(sender, message, false);
+	}
+	
+	public void message (CommandSender sender, String message, boolean singleLine)
+	{
+		if (singleLine) {
+			sender.sendMessage(FontWidthCalculator.truncate(message));
+		} else {
+			sender.sendMessage(message);
+		}
 	}
 	
 	public void info (CommandSender sender, String message)
@@ -204,6 +269,11 @@ public class Chat
 	public void error (CommandSender sender, String message)
 	{
 		message(sender, makeErrorMessage(message));
+	}
+	
+	public void heading (CommandSender sender, String heading)
+	{
+		message(sender, makeHeadingMessage(heading), true);
 	}
 	
 	// ------------------------------
@@ -238,5 +308,10 @@ public class Chat
 	public void broadcastError (String message)
 	{
 		broadcastMessage(makeErrorMessage(message));
+	}
+	
+	public void broadcastHeading (CommandSender sender, String heading)
+	{
+		broadcastMessage(makeHeadingMessage(heading));
 	}
 }
