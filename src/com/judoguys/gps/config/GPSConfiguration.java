@@ -17,18 +17,18 @@ package com.judoguys.gps.config;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.chat.Chat;
+import com.judoguys.bukkit.utils.LocationUtils;
+import com.judoguys.gps.GPS;
+import com.judoguys.logging.Logger;
+
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.util.config.Configuration;
-
-import com.judoguys.bukkit.chat.Chat;
-import com.judoguys.bukkit.utils.LocationUtils;
-import com.judoguys.gps.GPS;
 
 /**
  * FIXME: This class needs some major cleanup.
@@ -97,7 +97,7 @@ public class GPSConfiguration
 		Player player = server.getPlayer(playerName);
 		
 		if (player == null) {
-			plugin.getLogger().info(plugin.getLabel() + " Tried to load configuration for player that isn't logged in: " + playerName);
+			plugin.getLogger().info("Tried to load configuration for player that isn't logged in: " + playerName);
 			return null;
 		}
 		

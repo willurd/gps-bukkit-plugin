@@ -30,10 +30,11 @@ import com.judoguys.gps.actions.SetIsHiddenAction;
 import com.judoguys.gps.actions.UsageAction;
 import com.judoguys.gps.config.GPSConfiguration;
 import com.judoguys.gps.listeners.GPSPlayerListener;
+import com.judoguys.logging.Logger;
+import com.judoguys.logging.PrefixLogger;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -95,7 +96,6 @@ public class GPS extends JavaPlugin
 	private PluginDescriptionFile desc;
 	private File playersFolder;
 	private String version;
-	private String label;
 	
 	// ======================================================================
 	// CONSTRUCTORS
@@ -138,17 +138,6 @@ public class GPS extends JavaPlugin
 		return chat;
 	}
 	
-	// ~ label
-	
-	/**
-	 * Returns a string that identifies this plugin, mostly used
-	 * for logging.
-	 */
-	public String getLabel ()
-	{
-		return label;
-	}
-	
 	// ~ playersFolder
 	
 	/**
@@ -169,17 +158,17 @@ public class GPS extends JavaPlugin
 	 */
 	public void onEnable ()
 	{
-		// Setup the logger.
-		logger = getServer().getLogger();
-		
 		// Setup the GPS configurations.
 		configurations = new HashMap<String, GPSConfiguration>();
 		
 		// Setup the plugin information for logging.
 		desc = getDescription();
 		version = desc.getVersion();
-		label = "[" + desc.getName() + "]";
-		logger.info(getLabel() + " version " + version + " by willurd");
+		
+		// Setup the logger.
+		String prefix = "[" + desc.getName() + "] ";
+		logger = new PrefixLogger(getServer().getLogger(), prefix);
+		logger.info("version " + version + " by willurd");
 		
 		// Setup the data folders.
 		File dataFolder = getDataFolder();
@@ -206,7 +195,7 @@ public class GPS extends JavaPlugin
 		// Setup the chat commands/actions.
 		setupCommands();
 		
-		logger.info(getLabel() + " Plugin Enabled.");
+		logger.info("Plugin Enabled.");
 	}
 	
 	/**
@@ -218,7 +207,7 @@ public class GPS extends JavaPlugin
 	{
 		// TODO: What should be done here?.
 		
-		logger.info(getLabel() + " Plugin Disabled.");
+		logger.info("Plugin Disabled.");
 	}
 	
 	/**
@@ -280,7 +269,7 @@ public class GPS extends JavaPlugin
 		File dataFolder = getDataFolder();
 		
 		if (!dataFolder.exists()) {
-			logger.info(getLabel() + " Data folder does not exist. Creating it now.");
+			logger.info("Data folder does not exist. Creating it now.");
 			dataFolder.mkdir();
 		}
 		
@@ -288,7 +277,7 @@ public class GPS extends JavaPlugin
 		File playersFolder = getPlayersFolder();
 		
 		if (!playersFolder.exists()) {
-			logger.info(getLabel() + " Players folder does not exist. Creating it now.");
+			logger.info("Players folder does not exist. Creating it now.");
 			playersFolder.mkdir();
 		}
 	}

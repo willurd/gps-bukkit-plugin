@@ -19,9 +19,9 @@ package com.judoguys.gps.listeners;
 
 import com.judoguys.gps.GPS;
 import com.judoguys.gps.config.GPSConfiguration;
+import com.judoguys.logging.Logger;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -89,26 +89,26 @@ public class GPSPlayerListener extends PlayerListener
 		
 		// There is no config object for this player -- see if there's a
 		// config file to load for them.
-		logger.info(getPlugin().getLabel() + " Searching for " + playerName + "'s config file");
+		logger.info("Searching for " + playerName + "'s config file");
 		
 		File configFile = GPSConfiguration.configFileFor(playerName, getPlugin());
 		
 		if (configFile.exists()) {
-			logger.info(getPlugin().getLabel() + " Config file found");
+			logger.info("Config file found");
 			// The config file exists -- try to load it.
 			try {
 				config = GPSConfiguration.readFrom(configFile, getPlugin());
 				getPlugin().configurations.put(playerName, config);
 				return;
 			} catch (Exception e) {
-				logger.info(getPlugin().getLabel() + " Error loading config file for " + playerName + ": " + e.getMessage());
+				logger.info("Error loading config file for " + playerName + ": " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		
 		// Either the config file doesn't exist or there was an error reading
 		// it (possibly it was formatted improperly?).
-		logger.info(getPlugin().getLabel() + " Creating default config for " + playerName);
+		logger.info("Creating default config for " + playerName);
 		
 		config = new GPSConfiguration(plugin);
 		config.setPlayer(player);
@@ -157,7 +157,7 @@ public class GPSPlayerListener extends PlayerListener
 		// Location from = event.getFrom();
 		// Location to = event.getTo();
 		// 
-		// logger.info(getPlugin().getLabel() + " Player " + player.getName() + " (world=" +
+		// logger.info("Player " + player.getName() + " (world=" +
 		// 	player.getWorld().toString() + ") teleported from " +
 		// 	from.toString() + " to " + to.toString());
 		

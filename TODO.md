@@ -26,6 +26,9 @@
 **Versions**
 
 * Update to 1.4
+  * onPlayerTeleport (PlayerMoveEvent event) -> onPlayerTeleport (PlayerTeleportEvent event)
+  * onPlayerJoin (PlayerEvent event) -> onPlayerJoin (PlayerJoinEvent event)
+  * etc
 
 **Misc**
 
