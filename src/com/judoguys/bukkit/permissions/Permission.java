@@ -19,25 +19,47 @@ package com.judoguys.bukkit.permissions;
 
 /**
  * Represents a single permission.
+ * 
+ * TODO: Check out all of the different permissions systems and see
+ *       what information each one needs, to figure out what kind of
+ *       information this object needs to hold.
  */
 public class Permission
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
 	private String value;
 	
-	public Permission (String value)
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
+	
+	public Permission (String node)
 	{
-		setValue(value);
+		setNode(node);
 	}
 	
-	public String getValue ()
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ node
+	
+	public String getNode ()
 	{
-		return value;
+		return node;
 	}
 	
-	public void setValue (String value)
+	public void setNode (String value)
 	{
-		this.value = value;
+		node = value;
 	}
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
 	
 	@Override
 	public boolean equals (Object other)
@@ -51,12 +73,12 @@ public class Permission
 		}
 		
 		Permission otherPermission = (Permission)other;
-		return getValue().equals(otherPermission.getValue());
+		return getNode().equals(otherPermission.getNode());
 	}
 	
 	@Override
 	public String toString ()
 	{
-		return "[Permission " + getValue() + "]";
+		return "[Permission node='" + getNode() + "']";
 	}
 }
