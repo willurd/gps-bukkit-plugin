@@ -17,12 +17,20 @@ package com.judoguys.logging;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.logging.Level;
+
 /**
  * Defines the API for a simple logger (using the types defined in
  * {@link java.util.logging.Level}).
  */
 public interface Logger
 {
+	/**
+	 * Sets the minimum level this logger will log. All messages
+	 * with levels below this level will be ignored.
+	 */
+	void setLevel (Level value);
+	
 	/**
 	 * Logs a CONFIG message.
 	 */

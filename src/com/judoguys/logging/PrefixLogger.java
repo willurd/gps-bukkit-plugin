@@ -17,6 +17,7 @@ package com.judoguys.logging;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
@@ -95,6 +96,17 @@ public class PrefixLogger implements Logger
 			value = "";
 		}
 		prefix = value;
+	}
+	
+	// ~ level
+	
+	/**
+	 * Sets the minimum level this logger will log. All messages
+	 * with levels below this level will be ignored.
+	 */
+	public void setLevel (Level value)
+	{
+		getLogger().setLevel(value);
 	}
 	
 	// ======================================================================
