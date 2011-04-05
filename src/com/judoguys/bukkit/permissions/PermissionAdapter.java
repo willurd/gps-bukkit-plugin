@@ -40,5 +40,7 @@ public abstract class PermissionAdapter
 	
 	public abstract void reloadPermissions ();
 	
-	public abstract boolean hasPermission (CommandSender sender, Permission permission);
+	public abstract boolean hasPermission (CommandSender sender, String permission);
+	
+	// public abstract boolean hasPermission (CommandSender sender, Permission permission);
 }

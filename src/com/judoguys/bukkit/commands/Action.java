@@ -22,10 +22,9 @@ import java.util.ArrayList;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
- * A sub-command of a top-level command in bukkit.
+ * A sub-command of a top-level command in Bukkit.
  * 
  * Defined as the second keyword in a command string. If a player
  * typed '/money give player1 100', 'money' would be the command,

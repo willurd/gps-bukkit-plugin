@@ -17,33 +17,40 @@ package com.judoguys.bukkit.plugins.handlers;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import com.judoguys.bukkit.permissions.PermissionManager;
+import com.judoguys.bukkit.permissions.adapters.PermissionsPluginAdapter;
 import com.judoguys.bukkit.plugins.PluginHandler;
+
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.plugin.Plugin;
 
 public class PermissionsPluginHandler extends PluginHandler
 {
 	private Plugin mainPlugin;
+	private PermissionManager manager;
 	
-	public PermissionsPluginHandler (Plugin mainPlugin)
+	public PermissionsPluginHandler (Plugin mainPlugin, PermissionManager manager)
 	{
 		super("Permissions");
 		
 		this.mainPlugin = mainPlugin;
+		this.manager = manager;
 	}
 	
 	@Override
-	public void onPluginEnabled (Plugin plugin)
+	public void onPluginEnable (Plugin plugin)
 	{
-		super.onPluginEnabled(plugin);
+		super.onPluginEnable(plugin);
 		
-		// Do stuff here.
+		Permissions permissions = (Permissions)plugin;
+		manager.setAdapter(new PermissionsPluginAdapter(manager, permissions));
 	}
 	
-	public void onPluginDisabled (Plugin plugin)
+	public void onPluginDisable (Plugin plugin)
 	{
-		super.onPluginDisabled(plugin);
+		super.onPluginDisable(plugin);
 		
-		// Do stuff here.
+		// TODO: Disable Permissions if we're using it.
 	}
 }

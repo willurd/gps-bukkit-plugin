@@ -2,9 +2,12 @@
 	<property environment="env" />
 	
 	<property name="pluginname" value="GPS" />
-	<property name="bukkit.jar" location="/development/minecraft/bukkit/bukkit-0.0.1-SNAPSHOT.jar"/>
-	<property name="plugins.dir" location="${env.MINECRAFT_SERVER_PATH}/plugins/"/>
-
+	<property name="plugins.dir" location="${env.MINECRAFT_SERVER_PATH}/plugins/" />
+	
+	<!-- Dependencies -->
+	<property name="bukkit.jar" location="/development/minecraft/bukkit/bukkit-0.0.1-SNAPSHOT.jar" />
+	<property name="permissions.jar" location="${env.MINECRAFT_SERVER_PATH}/plugins/Permissions.jar" />
+	
 	<property name="src" location="src" />
 	<property name="bin" location="bin" />
 	<property name="dist" location="dist" />
@@ -17,6 +20,7 @@
 		<javac srcdir="${src}" destdir="${bin}" includeantruntime="false">
 			<classpath>
 				<pathelement location="${bukkit.jar}" />
+				<pathelement location="${permissions.jar}" />
 			</classpath>
 		</javac>
 	</target>

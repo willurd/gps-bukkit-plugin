@@ -35,9 +35,9 @@ public class DefaultAdapter extends PermissionAdapter
 		// Does nothing.
 	}
 	
-	public boolean hasPermission (CommandSender sender, Permission permission)
+	public boolean hasPermission (CommandSender sender, String permission)
 	{
-		// If no adapter has been specified by the
+		// Permissions default to true if no adapter has been specified.
 		return true;
 	}
 }

@@ -20,18 +20,20 @@ package com.judoguys.bukkit.chat;
 import com.judoguys.bukkit.utils.FontWidthCalculator;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 /**
  * @example Basic Usage
- *     Messager messager = new Messager();
- *     messager.info(player, "Your current status is: Alive");
- *     messager.notify(player, "Player1 is behind you!");
- *     messager.success(player, "You are now following Player1");
- *     messager.warning(player, "You are about to run out of diamonds");
- *     messager.error(player, "You have been kicked");
+ *     Chat chat = new Chat(yourPlugin);
+ *     chat.message(player, "This message has no color");
+ *     chat.info(player, "Your current status is: Alive");
+ *     chat.notify(player, "Player1 is behind you!");
+ *     chat.success(player, "You are now following Player1");
+ *     chat.warning(player, "You are about to run out of diamonds");
+ *     chat.error(player, "You have been kicked");
+ *     chat.heading(player, "Basic Usage");
+ *     // And corresponding broadcast methods for each one.
  */
 public class Chat
 {

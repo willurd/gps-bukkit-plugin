@@ -31,38 +31,66 @@ import org.bukkit.plugin.Plugin;
  * plugin handler when the time is right, leaving you to focus on what
  * happens then.
  */
-public abstract class PluginHandler
+public class PluginHandler
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
 	private String pluginName;
 	private Plugin plugin;
+	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
 	
 	public PluginHandler (String pluginName)
 	{
 		this.pluginName = pluginName;
 	}
 	
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ pluginName
+	
 	public String getPluginName ()
 	{
 		return pluginName;
 	}
+	
+	// ~ plugin
 	
 	public Plugin getPlugin ()
 	{
 		return plugin;
 	}
 	
-	public void onPluginEnabled (Plugin plugin)
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	// ------------------------------
+	// Predicates
+	// ------------------------------
+	
+	public boolean isPluginEnabled ()
+	{
+		return plugin != null && plugin.isEnabled();
+	}
+	
+	// ------------------------------
+	// Listeners
+	// ------------------------------
+	
+	public void onPluginEnable (Plugin plugin)
 	{
 		this.plugin = plugin;
 	}
 	
-	public void onPluginDisabled (Plugin plugin)
+	public void onPluginDisable (Plugin plugin)
 	{
 		plugin = null;
-	}
-	
-	public boolean isEnabled ()
-	{
-		return plugin != null && plugin.isEnabled();
 	}
 }

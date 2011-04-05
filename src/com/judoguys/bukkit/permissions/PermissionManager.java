@@ -56,8 +56,14 @@ public class PermissionManager
 		adapter.reloadPermissions();
 	}
 	
-	public boolean hasPermission (CommandSender sender, Permission permission)
+	public boolean hasPermission (CommandSender sender, String permission)
 	{
 		return adapter.hasPermission(sender, permission);
+		// return hasPermission(sender, new Permission(permission));
 	}
+	
+	// public boolean hasPermission (CommandSender sender, Permission permission)
+	// {
+	// 	return adapter.hasPermission(sender, permission);
+	// }
 }

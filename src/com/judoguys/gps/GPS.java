@@ -21,6 +21,8 @@ import com.judoguys.bukkit.chat.Chat;
 import com.judoguys.bukkit.commands.CommandHandler;
 import com.judoguys.bukkit.commands.InvalidCommandException;
 import com.judoguys.bukkit.permissions.PermissionManager;
+import com.judoguys.bukkit.plugins.PluginListener;
+import com.judoguys.bukkit.plugins.handlers.PermissionsPluginHandler;
 import com.judoguys.bukkit.utils.CommandUtils;
 import com.judoguys.gps.actions.FindAction;
 import com.judoguys.gps.actions.FollowAction;
@@ -93,6 +95,7 @@ public class GPS extends JavaPlugin
 	private Chat chat;
 	private CommandHandler commandHandler;
 	private GPSPlayerListener playerListener;
+	private PluginListener pluginListener;
 	private PluginDescriptionFile desc;
 	private File playersFolder;
 	private String version;
@@ -185,6 +188,11 @@ public class GPS extends JavaPlugin
 		pluginManager.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		pluginManager.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		pluginManager.registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
+		
+		// Setup the plugin listener (for hooking).
+		pluginListener = new PluginListener(this);
+		pluginListener.addHandler(new PermissionsPluginHandler(this, permissionManager));
+		pluginListener.register(pluginManager); // Takes care of the event registration.
 		
 		// Load the plugin settings.
 		loadSettings();

@@ -20,29 +20,53 @@ package com.judoguys.bukkit.permissions.adapters;
 import com.judoguys.bukkit.permissions.Permission;
 import com.judoguys.bukkit.permissions.PermissionAdapter;
 import com.judoguys.bukkit.permissions.PermissionManager;
+import com.judoguys.logging.Logger;
+import com.judoguys.logging.PrefixLogger;
+
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * This is the adapter for the Permissions plugin:
  * {@link http://forums.bukkit.org/threads/admn-dev-permissions-v2-5-5-phoenix-now-with-real-multiworld-permissions-602.5974/}.
  */
-public class PermissionsAdapter extends PermissionAdapter
+public class PermissionsPluginAdapter extends PermissionAdapter
 {
-	public PermissionsAdapter (PermissionManager manager)
+	private Permissions permissions;
+	private PermissionHandler permissionHandler;
+	
+	public PermissionsPluginAdapter (PermissionManager manager, Permissions permissions)
 	{
 		super(manager);
+		
+		this.permissions = permissions;
+		permissionHandler = permissions.getHandler();
 	}
 	
 	public void reloadPermissions ()
 	{
-		// FIXME: Load the permissions.
+		// TODO: Figure out how to make the Permissions plugin reload
+		//       its permissions.
 	}
 	
-	public boolean hasPermission (CommandSender sender, Permission permission)
+	public boolean hasPermission (CommandSender sender, String permission)
 	{
-		// FIXME: Use the Permissions plugin to figure out if the given
-		//        sender has the given permission.
-		return false;
+		java.util.logging.Logger ml = java.util.logging.Logger.getLogger("Minecraft");
+		Logger logger = new PrefixLogger(ml, "Permissions: ");
+		
+		Player player = (Player)sender;
+		
+		logger.info("Checking permission '" + permission + "' for player " + player.getDisplayName());
+		
+		if (permissionHandler.has(player, permission)) {
+			logger.info("  - has permission");
+		} else {
+			logger.info("  - does not have permission");
+		}
+		
+		return permissionHandler.has(player, permission);
 	}
 }

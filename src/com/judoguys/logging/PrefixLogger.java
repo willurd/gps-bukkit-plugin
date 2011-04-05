@@ -18,8 +18,6 @@ package com.judoguys.logging;
  */
 
 import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
 
 /**
  * A simple wrapper for a java.util.logging.Logger that adds a

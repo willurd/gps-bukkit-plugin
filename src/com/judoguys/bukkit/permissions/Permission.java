@@ -22,21 +22,21 @@ package com.judoguys.bukkit.permissions;
  */
 public class Permission
 {
-	private String name;
+	private String value;
 	
-	public Permission (String name)
+	public Permission (String value)
 	{
-		setName(name);
+		setValue(value);
 	}
 	
-	public String getName ()
+	public String getValue ()
 	{
-		return name;
+		return value;
 	}
 	
-	public void setName (String value)
+	public void setValue (String value)
 	{
-		name = value;
+		this.value = value;
 	}
 	
 	@Override
@@ -51,12 +51,12 @@ public class Permission
 		}
 		
 		Permission otherPermission = (Permission)other;
-		return getName().equals(otherPermission.getName());
+		return getValue().equals(otherPermission.getValue());
 	}
 	
 	@Override
 	public String toString ()
 	{
-		return "[Permission " + getName() + "]";
+		return "[Permission " + getValue() + "]";
 	}
 }
