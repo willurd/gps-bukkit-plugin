@@ -25,10 +25,43 @@ import org.bukkit.command.CommandSender;
 
 public class DefaultAdapter extends PermissionAdapter
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
+	private boolean answer;
+	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
+	
 	public DefaultAdapter (PermissionManager manager)
 	{
 		super(manager);
+		
+		// Permissions default to true if no adapter has been specified.
+		setAnswer(true);
 	}
+	
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ answer
+	
+	public boolean getAnswer ()
+	{
+		return answer;
+	}
+	
+	public void setAnswer (boolean value)
+	{
+		answer = value;
+	}
+	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
 	
 	public void reloadPermissions ()
 	{
@@ -37,7 +70,6 @@ public class DefaultAdapter extends PermissionAdapter
 	
 	public boolean hasPermission (CommandSender sender, String permission)
 	{
-		// Permissions default to true if no adapter has been specified.
-		return true;
+		return getAnswer();
 	}
 }

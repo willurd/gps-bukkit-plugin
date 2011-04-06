@@ -30,7 +30,7 @@ public class Permission
 	// PRIVATE PROPERTIES
 	// ======================================================================
 	
-	private String value;
+	private String node;
 	
 	// ======================================================================
 	// CONSTRUCTORS
@@ -61,22 +61,17 @@ public class Permission
 	// PUBLIC METHODS
 	// ======================================================================
 	
-	@Override
-	public boolean equals (Object other)
+	public boolean equals (Object obj)
 	{
-		if (other == null) {
+		// TEST: Will this work instead:
+		// if (!(obj instanceof Permission)) {
+		if (obj == null || !(obj instanceof Permission)) {
 			return false;
 		}
-		
-		if (!(other instanceof Permission)) {
-			return false;
-		}
-		
-		Permission otherPermission = (Permission)other;
-		return getNode().equals(otherPermission.getNode());
+		Permission other = (Permission)obj;
+		return getNode().equals(other.getNode());
 	}
 	
-	@Override
 	public String toString ()
 	{
 		return "[Permission node='" + getNode() + "']";

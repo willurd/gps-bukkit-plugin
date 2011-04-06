@@ -106,7 +106,7 @@ public class PluginListener extends ServerListener
 	 * Called when a plugin is enabled.
 	 */
 	@Override
-	public void onPluginEnabled (PluginEvent event)
+	public void onPluginEnable (PluginEvent event)
 	{
 		Plugin plugin = event.getPlugin();
 		String pluginName = plugin.getDescription().getName();
@@ -123,7 +123,7 @@ public class PluginListener extends ServerListener
 	 * Called when a plugin is disabled.
 	 */
 	@Override
-	public void onPluginDisabled (PluginEvent event)
+	public void onPluginDisable (PluginEvent event)
 	{
 		Plugin plugin = event.getPlugin();
 		String pluginName = plugin.getDescription().getName();
