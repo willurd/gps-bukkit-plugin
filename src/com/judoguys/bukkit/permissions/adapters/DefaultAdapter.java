@@ -21,7 +21,7 @@ import com.judoguys.bukkit.permissions.Permission;
 import com.judoguys.bukkit.permissions.PermissionAdapter;
 import com.judoguys.bukkit.permissions.PermissionManager;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class DefaultAdapter extends PermissionAdapter
 {
@@ -29,6 +29,7 @@ public class DefaultAdapter extends PermissionAdapter
 	// PRIVATE PROPERTIES
 	// ======================================================================
 	
+	private boolean mustBeOp;
 	private boolean answer;
 	
 	// ======================================================================
@@ -39,13 +40,27 @@ public class DefaultAdapter extends PermissionAdapter
 	{
 		super(manager);
 		
-		// Permissions default to true if no adapter has been specified.
-		setAnswer(true);
+		// By default, players must be Op in order to have permissions, when
+		// no permissions plugins are specified.
+		setMustBeOp(true);
+		setAnswer(false);
 	}
 	
 	// ======================================================================
 	// ACCESSORS
 	// ======================================================================
+	
+	// ~ mustBeOp
+	
+	public boolean getMustBeOp ()
+	{
+		return mustBeOp;
+	}
+	
+	public void setMustBeOp (boolean value)
+	{
+		mustBeOp = value;
+	}
 	
 	// ~ answer
 	
@@ -68,8 +83,12 @@ public class DefaultAdapter extends PermissionAdapter
 		// Does nothing.
 	}
 	
-	public boolean hasPermission (CommandSender sender, String permission)
+	public boolean hasPermission (Player player, String permission)
 	{
-		return getAnswer();
+		if (getMustBeOp()) {
+			return player.isOp();
+		} else {
+			return getAnswer();
+		}
 	}
 }

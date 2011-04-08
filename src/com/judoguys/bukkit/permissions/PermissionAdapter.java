@@ -17,30 +17,48 @@ package com.judoguys.bukkit.permissions;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public abstract class PermissionAdapter
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
 	private PermissionManager manager;
 	
-	public PermissionAdapter ()
-	{
-		// Does nothing.
-	}
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
 	
 	public PermissionAdapter (PermissionManager manager)
 	{
 		this.manager = manager;
 	}
 	
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ manager
+	
 	public PermissionManager getManager ()
 	{
 		return manager;
 	}
 	
+	// ======================================================================
+	// PUBLIC ABSTRACT METHODS
+	// ======================================================================
+	
+	// TODO: Implement the rest of the methods from PermissionsPluginAdapter
+	//       here.
+	
 	public abstract void reloadPermissions ();
 	
-	public abstract boolean hasPermission (CommandSender sender, String permission);
+	// public abstract void reloadPermissions (String world);
 	
-	// public abstract boolean hasPermission (CommandSender sender, Permission permission);
+	public abstract boolean hasPermission (Player player, String permission);
+	
+	// public abstract boolean groupHasPermission (String group, String permission);
 }

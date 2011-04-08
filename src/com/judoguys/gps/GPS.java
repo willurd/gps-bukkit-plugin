@@ -153,7 +153,7 @@ public class GPS extends JavaPlugin
 	}
 	
 	// ======================================================================
-	// Plugin INTERFACE
+	// PUBLIC METHODS
 	// ======================================================================
 	
 	/**
@@ -196,9 +196,6 @@ public class GPS extends JavaPlugin
 		
 		// Load the plugin settings.
 		loadSettings();
-		
-		// Setup permissions.
-		setupPermissions();
 		
 		// Setup the chat commands/actions.
 		setupCommands();
@@ -288,18 +285,6 @@ public class GPS extends JavaPlugin
 			logger.info("Players folder does not exist. Creating it now.");
 			playersFolder.mkdir();
 		}
-	}
-	
-	/**
-	 * NOTE: Permissions is not supported...yet.
-	 * 
-	 * Thought this does nothing now, once permissions is supported
-	 * it will load the permissions information and do the requisite
-	 * setup.
-	 */
-	private void setupPermissions ()
-	{
-		
 	}
 	
 	/**

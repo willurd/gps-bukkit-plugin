@@ -29,6 +29,7 @@ public class PermissionsPluginHandler extends PluginHandler
 {
 	private Plugin mainPlugin;
 	private PermissionManager manager;
+	private PermissionsPluginAdapter adapter;
 	
 	public PermissionsPluginHandler (Plugin mainPlugin, PermissionManager manager)
 	{
@@ -38,19 +39,23 @@ public class PermissionsPluginHandler extends PluginHandler
 		this.manager = manager;
 	}
 	
-	@Override
 	public void onPluginEnable (Plugin plugin)
 	{
 		super.onPluginEnable(plugin);
 		
 		Permissions permissions = (Permissions)plugin;
-		manager.setAdapter(new PermissionsPluginAdapter(manager, permissions));
+		adapter = new PermissionsPluginAdapter(manager, permissions);
+		manager.setAdapter(adapter);
 	}
 	
 	public void onPluginDisable (Plugin plugin)
 	{
 		super.onPluginDisable(plugin);
 		
-		// TODO: Disable Permissions if we're using it.
+		if (manager.getAdapter() == adapter) {
+			// The Permissions adapter is currently registered with the
+			// permission manager; unregister it.
+			manager.setAdapter(null);
+		}
 	}
 }

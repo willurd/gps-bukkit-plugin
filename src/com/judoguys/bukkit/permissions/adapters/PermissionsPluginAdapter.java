@@ -26,7 +26,6 @@ import com.judoguys.logging.PrefixLogger;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
@@ -35,6 +34,8 @@ import org.bukkit.entity.Player;
  */
 public class PermissionsPluginAdapter extends PermissionAdapter
 {
+	private Logger logger;
+	
 	private Permissions permissions;
 	private PermissionHandler permissionHandler;
 	
@@ -44,29 +45,43 @@ public class PermissionsPluginAdapter extends PermissionAdapter
 		
 		this.permissions = permissions;
 		permissionHandler = permissions.getHandler();
+		
+		java.util.logging.Logger minecraftLogger = java.util.logging.Logger.getLogger("Minecraft");
+		logger = new PrefixLogger(minecraftLogger, "Permissions: ");
 	}
 	
 	public void reloadPermissions ()
 	{
-		// TODO: Figure out how to make the Permissions plugin reload
-		//       its permissions.
+		permissionHandler.reload();
 	}
 	
-	public boolean hasPermission (CommandSender sender, String permission)
+	public void reloadPermissions (String world)
 	{
-		java.util.logging.Logger ml = java.util.logging.Logger.getLogger("Minecraft");
-		Logger logger = new PrefixLogger(ml, "Permissions: ");
-		
-		Player player = (Player)sender;
-		
-		logger.info("Checking permission '" + permission + "' for player " + player.getDisplayName());
-		
-		if (permissionHandler.has(player, permission)) {
-			logger.info("  - has permission");
-		} else {
-			logger.info("  - does not have permission");
-		}
-		
-		return permissionHandler.has(player, permission);
+		permissionHandler.reload(world);
+	}
+	
+	public boolean hasPermission (Player player, String permission)
+	{
+		return permissionHandler.permission(player, permission);
+	}
+	
+	// public boolean groupHasPermission (String group, String permission)
+	// {
+	// 	
+	// }
+	
+	public String getPlayerGroup (String player, String world)
+	{
+		return permissionHandler.getGroup(world, player);
+	}
+	
+	// public String getPlayerGroups (String player, String world)
+	// {
+	// 	return permissionHandler.getGroups(world, player);
+	// }
+	
+	public boolean isInGroup (String player, String group, String world)
+	{
+		return permissionHandler.inGroup(world, player, group);
 	}
 }

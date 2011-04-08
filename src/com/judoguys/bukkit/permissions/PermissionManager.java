@@ -20,11 +20,20 @@ package com.judoguys.bukkit.permissions;
 import com.judoguys.bukkit.permissions.adapters.DefaultAdapter;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class PermissionManager
 {
+	// ======================================================================
+	// PRIVATE PROPERTIES
+	// ======================================================================
+	
 	private PermissionAdapter defaultAdapter = new DefaultAdapter(this);
 	private PermissionAdapter adapter;
+	
+	// ======================================================================
+	// CONSTRUCTORS
+	// ======================================================================
 	
 	public PermissionManager ()
 	{
@@ -35,6 +44,12 @@ public class PermissionManager
 	{
 		setAdapter(adapter);
 	}
+	
+	// ======================================================================
+	// ACCESSORS
+	// ======================================================================
+	
+	// ~ adapter
 	
 	public PermissionAdapter getAdapter ()
 	{
@@ -51,6 +66,13 @@ public class PermissionManager
 		adapter = value;
 	}
 	
+	// ======================================================================
+	// PUBLIC METHODS
+	// ======================================================================
+	
+	// TODO: Implement the rest of the methods from PermissionsPluginAdapter
+	//       here.
+	
 	public void reloadPermissions ()
 	{
 		adapter.reloadPermissions();
@@ -58,12 +80,12 @@ public class PermissionManager
 	
 	public boolean hasPermission (CommandSender sender, String permission)
 	{
-		return adapter.hasPermission(sender, permission);
-		// return hasPermission(sender, new Permission(permission));
+		if (sender instanceof Player) {
+			return adapter.hasPermission((Player)sender, permission);
+		} else {
+			// As of now, if it's not a Player it's a ConsoleCommandSender,
+			// and thus has all permissions.
+			return true;
+		}
 	}
-	
-	// public boolean hasPermission (CommandSender sender, Permission permission)
-	// {
-	// 	return adapter.hasPermission(sender, permission);
-	// }
 }

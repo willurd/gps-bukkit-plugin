@@ -30,6 +30,12 @@ import org.bukkit.event.server.PluginEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+/**
+ * Manages a set of PluginHandlers, each with special knowledge
+ * of the specifc plugin it handles. Listens for plugin enable
+ * and disable events on a plugin manager (registered by
+ * calling register(pluginManager)).
+ */
 public class PluginListener extends ServerListener
 {
 	// ======================================================================
@@ -96,6 +102,10 @@ public class PluginListener extends ServerListener
 	// PUBLIC METHODS
 	// ======================================================================
 	
+	/**
+	 * Registers this class with the given plugin manager, so it
+	 * can be notified of when plugins are enabled and disabled.
+	 */
 	public void register (PluginManager pluginManager)
 	{
 		pluginManager.registerEvent(Event.Type.PLUGIN_ENABLE, this, Priority.Monitor, mainPlugin);
@@ -105,8 +115,7 @@ public class PluginListener extends ServerListener
 	/**
 	 * Called when a plugin is enabled.
 	 */
-	@Override
-	public void onPluginEnable (PluginEvent event)
+	public void onPluginEnabled (PluginEvent event)
 	{
 		Plugin plugin = event.getPlugin();
 		String pluginName = plugin.getDescription().getName();
@@ -122,8 +131,7 @@ public class PluginListener extends ServerListener
 	/**
 	 * Called when a plugin is disabled.
 	 */
-	@Override
-	public void onPluginDisable (PluginEvent event)
+	public void onPluginDisabled (PluginEvent event)
 	{
 		Plugin plugin = event.getPlugin();
 		String pluginName = plugin.getDescription().getName();
